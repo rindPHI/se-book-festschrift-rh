@@ -3,7 +3,24 @@
 #
 - file: intro
 - file: minipy
-- file: content
+- file: foundations
   sections:
-    - file: markdown
-    - file: notebooks
+    - file: semantics
+    - file: symbolic_interpreter
+- file: techniques
+  sections:
+    - file: static_loops
+    - file: concolic
+    - file: selective
+    - file: compositional
+- file: applications
+  sections:
+    - file: proving
+    - file: fuzzing
+    - file: debugging
+- file: perspectives
+- file: conclusion
+#- file: content
+#  sections:
+#    - file: markdown
+#    - file: notebooks
