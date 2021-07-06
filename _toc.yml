@@ -13,6 +13,7 @@
     - file: concolic
     - file: selective
     - file: compositional
+    - file: stateexplosion
 - file: applications
   sections:
     - file: proving
