@@ -9,11 +9,12 @@
     - file: symbolic_interpreter
 - file: techniques
   sections:
+    - file: transparent_function_execution
     - file: static_loops
-    - file: concolic
-    - file: selective
     - file: compositional
+    - file: concolic
     - file: stateexplosion
+    - file: selective
 - file: applications
   sections:
     - file: proving
