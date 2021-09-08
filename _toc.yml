@@ -7,6 +7,7 @@
   sections:
     - file: semantics
     - file: symbolic_interpreter
+    - file: correctness
 - file: techniques
   sections:
     - file: transparent_function_execution
