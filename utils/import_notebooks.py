@@ -26,11 +26,11 @@ from typing import Optional, List, Any, Dict
 #
 # PLEASE NOTE: if you change this, also change the corresponding 
 # definition in utils/export_notebook_code.py
-RE_CODE = re.compile(r"^(def |class |@|[A-Z][A-Za-z0-9_]+ [-+*/]?= |[A-Z][A-Za-z0-9_]+[.:]|import |from )")
+RE_CODE = re.compile(r"^(def |class |@|[A-Z][A-Za-z0-9_]+ [-+*/]?= |[A-Z][A-Za-z0-9_]+[.:]|import |from |#% EXPORT)")
 
 def do_import(code: str) -> bool:
     """Return True if code is to be exported"""
-    while code.startswith('#') or code.startswith('\n'):
+    while (code.startswith('#') and not code.startswith("#% EXPORT")) or code.startswith('\n'):
         # Skip leading comments
         code = code[code.find('\n') + 1:]
 
