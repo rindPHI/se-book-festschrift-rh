@@ -302,8 +302,425 @@
               <div>
                 
   <div class="section" id="concolic-execution">
-<h1>Concolic Execution<a class="headerlink" href="#concolic-execution" title="Permalink to this headline">¶</a></h1>
-<p>TODO</p>
+<span id="techniques-concolic-execution"></span><h1>Concolic Execution<a class="headerlink" href="#concolic-execution" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition">
+<p class="admonition-title">TODO</p>
+<p>Write text.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">symbolic_interpreter</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">compositional</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConcolicInterpreter</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">concrete_store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+            <span class="n">predicates</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">SortRef</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">z3</span><span class="o">.</span><span class="n">SortRef</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">predicates</span><span class="o">=</span><span class="n">predicates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span> <span class="o">=</span> <span class="n">concrete_store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subst_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">():</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="o">.</span><span class="n">env</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">constraint_satisfied</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">is_unsat</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">subst</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst_map</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">execute_try_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">TryStmt</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">block</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[</span><span class="n">tree</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+            <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">leaf</span>
+            <span class="n">exc</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">abrupt_completion</span>
+            <span class="k">if</span> <span class="n">exc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">AbruptCompletionNoException</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">exc_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">caught_exc_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;builtins&quot;</span><span class="p">],</span> <span class="n">stmt</span><span class="o">.</span><span class="n">exc_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">caught_exc_type</span><span class="p">):</span>
+                    <span class="n">catch_block_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">except_block</span><span class="p">,</span>
+                                                    <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">replace_in_tree</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">catch_block_tree</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">catch_block_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">block</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">replace_in_tree</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">catch_block_tree</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">execute_if_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">IfStmt</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
+        <span class="n">eval_expr_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">guard</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="p">:</span> <span class="n">SET</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[])</span>
+
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">exc_node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="k">continue</span>
+
+            <span class="k">assert</span> <span class="n">z3</span><span class="o">.</span><span class="n">is_bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="n">then_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">then_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">then_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_block</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">then_block</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
+
+            <span class="n">else_constraint</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="n">else_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">else_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_block</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span><span class="p">,</span> <span class="n">else_env</span><span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">execute_while_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">WhileStmt</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+                           <span class="n">loop_unrolling_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
+        <span class="n">eval_guard_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">guard</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[])</span>
+
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_guard_res</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">exc_node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="k">continue</span>
+
+            <span class="n">then_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">then_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">then_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_block</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">subtree</span><span class="p">):</span>
+                    <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">leaf</span>
+                    <span class="n">env</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span>
+                    <span class="n">exc</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">abrupt_completion</span>
+                    <span class="k">if</span> <span class="n">exc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">Continue</span><span class="p">):</span>
+                            <span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">Break</span><span class="p">):</span>
+                            <span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                            <span class="n">result</span> <span class="o">=</span> <span class="n">replace_in_tree</span><span class="p">(</span>
+                                <span class="n">result</span><span class="p">,</span> <span class="n">leaf</span><span class="p">,</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+                            <span class="k">continue</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">continue</span>
+
+                    <span class="n">while_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_while_stmt</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">replace_in_tree</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">while_tree</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+            <span class="n">else_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="n">else_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">else_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_block</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span><span class="p">,</span> <span class="n">else_env</span><span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;else:&#39;</span><span class="p">),</span> <span class="p">[</span><span class="n">subtree</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">def</span> <span class="nf">execute_assert_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">Assert</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
+        <span class="n">eval_expr_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">expression</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+
+        <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SET</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="n">children</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
+            <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">new_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">new_env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+                <span class="k">continue</span>
+
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span>
+            <span class="n">sat_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">viol_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+            <span class="n">sat_env_unsat</span> <span class="o">=</span> <span class="n">sat_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="n">viol_env_unsat</span> <span class="o">=</span> <span class="n">viol_env</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_store</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">sat_env_unsat</span><span class="p">:</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">()),</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+            <span class="k">elif</span> <span class="n">viol_env_unsat</span><span class="p">:</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">sat_env</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">viol_env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">()),</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">execute_assignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">Assignment</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
+        <span class="n">eval_expr_result</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">constraint</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">expression</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
+        <span class="p">]</span>
+
+        <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SET</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="n">children</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">variable</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">lhs</span><span class="p">,</span> <span class="n">get_type_for_z3_expr</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+            <span class="c1"># if len(eval_expr_result) &gt; 1:  # &lt;-- To collect all potentially relevant constraints</span>
+            <span class="n">new_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">new_env</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">[]))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvalExprResult</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr_interpretations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[(</span><span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">)</span> <span class="k">else</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">constraint</span><span class="p">))</span> <span class="k">for</span>
+                      <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr_interpretations</span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="n">expr</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span> <span class="k">if</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">constraint_satisfied</span><span class="p">(</span><span class="n">constraint</span><span class="p">)]</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">assert</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_minipy docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertion_point</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="c1"># assume Sorted(t)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">assert</span> <span class="n">PostInsertionPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+<span class="n">post_insertion_point</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>                
+        <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">resultv</span><span class="p">,</span>
+        <span class="n">resultv</span> <span class="o">&lt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                    <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                    <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">resultv</span><span class="p">),</span>
+                <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">xv</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                    <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">resultv</span><span class="p">,</span>
+                    <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">)),</span>
+                <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">xv</span>
+            <span class="p">)</span>
+        <span class="p">)))</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">post_insertion_point</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0&nbsp;&le;&nbsp;result&nbsp;&and;<BR/>result&nbsp;&le;&nbsp;Length(t)&nbsp;&and;<BR/>(&forall;k&nbsp;:&nbsp;0&nbsp;&le;&nbsp;k&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;result&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&lt;&nbsp;x)&nbsp;&and;<BR/>(&forall;k&nbsp;:&nbsp;k&nbsp;&ge;&nbsp;result&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;Length(t)&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&ge;&nbsp;x)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point_code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">insertion_point</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">insertion_point_program</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">insertion_point_code</span><span class="p">)</span>
+<span class="n">display_program</span><span class="p">(</span><span class="n">insertion_point_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertion_point</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="c1"># assume Sorted(t)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">assert</span> <span class="n">PostInsertionPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">TUPLE_TYPE</span><span class="p">)</span>
+
+<span class="n">initial_store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="mi">13</span><span class="p">,)})</span>
+<span class="n">initial_store</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Store({Variable(&#39;x&#39;, Type(&#39;int&#39;)): 1, Variable(&#39;t&#39;, Type(&#39;tuple&#39;)): (13,)})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predicates</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;PostInsertionPoint&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">post_insertion_point</span><span class="p">),</span>
+    <span class="s2">&quot;len&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">interpreter</span> <span class="o">=</span> <span class="n">ConcolicInterpreter</span><span class="p">(</span>
+    <span class="n">concrete_store</span><span class="o">=</span><span class="n">initial_store</span><span class="p">,</span>
+    <span class="n">predicates</span><span class="o">=</span><span class="n">predicates</span>
+<span class="p">)</span>
+
+<span class="n">insertion_point_set</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute_function_body</span><span class="p">(</span><span class="s2">&quot;insertion_point&quot;</span><span class="p">,</span> <span class="n">insertion_point_program</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">insertion_point_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/concolic_9_0.svg" src="_images/concolic_9_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final_constraint</span> <span class="o">=</span> <span class="n">z3_and</span><span class="p">(</span><span class="o">*</span><span class="n">get_leaves</span><span class="p">(</span><span class="n">insertion_point_set</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">)</span>
+<span class="n">final_constraint</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">&not;(Length(t) &le; 0) &and;
+If(Length(t) &le; 0, seq.nth_u(t, 0), seq.nth_i(t, 0)) &ge; x</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Solver</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">final_constraint</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">sat</span>
+<span class="n">z3_model</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+<span class="n">z3_model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">[x = 3, t = Unit(2)]</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">store_from_z3_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">ModelRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="n">ValueType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">constant</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+        <span class="n">constant_name</span> <span class="o">=</span> <span class="n">constant</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="n">constant</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">get_type_for_z3_expr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">env</span><span class="p">[</span><span class="n">Variable</span><span class="p">(</span><span class="n">constant_name</span><span class="p">,</span> <span class="n">t</span><span class="p">)]</span> <span class="o">=</span> <span class="n">z3_expr_to_python_expr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Store</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_store</span> <span class="o">=</span> <span class="n">store_from_z3_model</span><span class="p">(</span><span class="n">z3_model</span><span class="p">)</span>
+<span class="n">new_store</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Store({Variable(&#39;x&#39;, Type(&#39;int&#39;)): 3, Variable(&#39;t&#39;, Type(&#39;tuple&#39;)): (2,)})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">ConcolicInterpreter</span><span class="p">(</span>
+    <span class="n">concrete_store</span><span class="o">=</span><span class="n">new_store</span><span class="p">,</span>
+    <span class="n">predicates</span><span class="o">=</span><span class="n">predicates</span>
+<span class="p">)</span>
+
+<span class="n">new_insertion_point_set</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute_function_body</span><span class="p">(</span><span class="s2">&quot;insertion_point&quot;</span><span class="p">,</span> <span class="n">insertion_point_program</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">insertion_point_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/concolic_14_0.svg" src="_images/concolic_14_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_final_constraint</span> <span class="o">=</span> <span class="n">z3_and</span><span class="p">(</span><span class="o">*</span><span class="n">get_leaves</span><span class="p">(</span><span class="n">new_insertion_point_set</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">)</span>
+<span class="n">new_final_constraint</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Length(t) &le; 1 &and;
+&not;(Length(t) &le; 0) &and;
+&not;(If(Length(t) &le; 0, seq.nth_u(t, 0), seq.nth_i(t, 0)) &ge; x)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Solver</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">final_constraint</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">new_final_constraint</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">sat</span>
+<span class="n">z3_model</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+<span class="n">z3_model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">[t = Empty(Seq(Int)), x = 1 + seq.nth_i(Empty(Seq(Int)), 0)]</div></div>
+</div>
+<div class="admonition-todo admonition">
+<p class="admonition-title">TODO</p>
+<p>Explain that this is the principle of concolic testing, and we will discuss how to turn this into a verification procedure in Testing chapter. (Note that the returned z3 expr tries to extract an element from an empty sequence).</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
