@@ -1,0 +1,1202 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compositional Symbolic Execution &#8212; Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/page.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Concolic Execution" href="concolic.html" />
+    <link rel="prev" title="Loops in Static Symbolic Execution" href="static_loops.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="minipy.html">
+   Parser and Interpreter for minipy
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="foundations.html">
+   Foundations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="constraint_solving.html">
+     Constraint Solving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="semantics.html">
+     Syntax and Semantics of Symbolic States
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="symbolic_interpreter.html">
+     A Symbolic Interpreter and Correctness of Symbolic Transitions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="correctness.html">
+     Correctness of Symbolic Transitions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="techniques.html">
+   Techniques
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="transparent_function_execution.html">
+     Transparent Symbolic Execution of Function Calls
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="static_loops.html">
+     Loops in Static Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Compositional Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concolic.html">
+     Concolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stateexplosion.html">
+     Tackling State Explosion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="selective.html">
+     Selective Symbolic Execution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="applications.html">
+   Applications
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proving.html">
+     Program Proving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fuzzing.html">
+     Symbolic Fuzzing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     Symbolic Debugging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perspectives.html">
+   Future Perspectives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="conclusion.html">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/compositional.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh/issues/new?title=Issue%20on%20page%20%2Fcompositional.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="compositional-symbolic-execution">
+<span id="techniques-compositional-se"></span><h1>Compositional Symbolic Execution<a class="headerlink" href="#compositional-symbolic-execution" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">minipy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">constraint_solving</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">semantics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">symbolic_interpreter</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">transparent_function_execution</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">static_loops</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Symbolic execution is a powerful program exploration technique, useful both in program verification, where SE overapproximates all feasible program paths, and test case generation, where SE steers the next program execution towards a yet uncovered path. In both application scenarios, however, it suffers from the <em>path explosion problem</em>: There are simply too many feasible program paths in large, realistic programs. This leads to immense symbolic execution trees in the case of static SE, and very long, complicated path conditions to be processed in the case of dynamic/concolic SE.</p>
+<p>One solution to this problem is to render symbolic execution into a <em>compositional</em> analysis by analyzing not complete systems, but individual functions one at a time. This is accomplished by annotating functions with <em>summaries</em>, which conjoin “constraints on the function inputs observed during the exploration
+of a path (…) with constraints observed on the outputs” <span id="id1">[<a class="reference internal" href="symbolic_interpreter.html#id155"><span>BCCDElia+18</span></a>]</span>. Instead of symbolically executing a called function, we can use its <em>summary</em> to obtain the resulting symbolic state, which can dramatically reduce the overall search space.</p>
+<p>Function summaries seem to have arisen independently in the areas of SE-based test generation and program verification. In the former area, Godefroid <span id="id2">[<a class="reference internal" href="#id38"><span>God07</span></a>]</span> introduces the idea, building on existing similar principles form interprocedural static analysis (e.g., <span id="id3">[<a class="reference internal" href="#id37"><span>RHS95</span></a>]</span>). As natural in automated test case generation, summaries are expected to be computed automatically; they are means for re-using previously discovered analysis results. In <span id="id4">[<a class="reference internal" href="symbolic_interpreter.html#id179"><span>AGT08</span></a>]</span>, the original idea of function summaries is extended to a demand-driven approach allowing lazy expansion of of incomplete summaries, which further improves the performance of the analysis.</p>
+<p>For the area of program verification, we did not find an explicit reference to the first original work using function summaries for modular, static symbolic execution. However, function summaries are already mentioned as a means for modularization in the first paper reporting on the KeY project <span id="id5">[<a class="reference internal" href="#id172"><span>ABB+00</span></a>]</span>, which appeared in 2000. Usually, function summaries are called “contract” in the verification context, inspired by the “design-by-contract” methodology <span id="id6">[<a class="reference internal" href="#id36"><span>Mey92</span></a>]</span>. Contracts are not only used for scalability, but additionally define the verification goals, i.e., the expected behavior, of functions in the program under test.</p>
+<p>To support compositional symbolic execution, we extend our framework in two directions:</p>
+<ol class="simple">
+<li><p>We add a convenience method to the symbolic interpreter which allows executing an individual function by its name, even without providing an initial symbolic environment.</p></li>
+<li><p>We implement a new code transformer which replaces function calls by assertions of preconditions, <code class="docutils literal notranslate"><span class="pre">havoc</span></code> statements resetting the value of the variable to which the result of the function call is assigned, and assumptions of postconditions. This is similar to the transformation for SE with loop invariants described in <a class="reference internal" href="static_loops.html#techniques-loops-static-se"><span class="std std-ref">Loops in Static Symbolic Execution</span></a>, only that we do not verify that a function respect its contract when evaluating calls to that function. The verification can be done separately, for instance by suitably placed <code class="docutils literal notranslate"><span class="pre">assert</span></code> statements.</p></li>
+</ol>
+<div class="admonition-todo admonition">
+<p class="admonition-title">TODO</p>
+<ul class="simple">
+<li><p>Add both extensions describe above</p></li>
+<li><p>Introduce insertion sort example below</p></li>
+<li><p>Transform example, compositionally execute all functions. Maybe also non-compositionally to demonstrate how cumbersome this is.</p></li>
+</ul>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicInterpreter</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute_function_body</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">program</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+            <span class="n">environment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SymbolicEnvironment</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">loop_unrolling_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">function_defs</span> <span class="o">=</span> <span class="n">FilterASTVisitor</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">program</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">FunctionDef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">function_name</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">function_defs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">function_def</span><span class="p">:</span> <span class="n">FunctionDef</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">function_defs</span><span class="p">))</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">Variable</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">get_type</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">type</span><span class="p">))</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">function_def</span><span class="o">.</span><span class="n">params</span><span class="p">]</span>
+
+        <span class="n">new_environment</span> <span class="o">=</span> <span class="n">environment</span> <span class="ow">or</span> <span class="n">SymbolicEnvironment</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">new_environment</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">new_environment</span> <span class="o">=</span> <span class="n">new_environment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">function_def</span><span class="o">.</span><span class="n">block</span><span class="p">,</span> <span class="n">new_environment</span><span class="p">,</span> <span class="n">loop_unrolling_threshold</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Contract</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">precondition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">postcondition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">return_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precondition</span> <span class="o">=</span> <span class="n">precondition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postcondition</span> <span class="o">=</span> <span class="n">postcondition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_type</span> <span class="o">=</span> <span class="n">return_type</span>
+
+
+<span class="k">class</span> <span class="nc">CompositionalSETransformer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span> <span class="n">contracts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Contract</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contracts</span> <span class="o">=</span> <span class="n">contracts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used_variables</span> <span class="o">=</span> <span class="n">UsedVariablesVisitor</span><span class="o">.</span><span class="n">get_used_variables</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ASTNode</span><span class="p">)</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">ASTNode</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Assignment</span><span class="p">):</span>
+            <span class="n">expression</span><span class="p">,</span> <span class="n">contract_calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_expression</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">expression</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract_calls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">Stmts</span><span class="p">(</span><span class="n">contract_calls</span> <span class="o">+</span> <span class="p">[</span><span class="n">Assignment</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">lhs</span><span class="p">,</span> <span class="n">expression</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Assert</span><span class="p">):</span>
+            <span class="n">expression</span><span class="p">,</span> <span class="n">contract_calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_expression</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">expression</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract_calls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">Stmts</span><span class="p">(</span><span class="n">contract_calls</span> <span class="o">+</span> <span class="p">[</span><span class="n">Assert</span><span class="p">(</span><span class="n">expression</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ReturnStmt</span><span class="p">):</span>
+            <span class="n">expression</span><span class="p">,</span> <span class="n">contract_calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_expression</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">expression</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract_calls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">Stmts</span><span class="p">(</span><span class="n">contract_calls</span> <span class="o">+</span> <span class="p">[</span><span class="n">ReturnStmt</span><span class="p">(</span><span class="n">expression</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">IfStmt</span><span class="p">):</span>
+            <span class="n">guard</span><span class="p">,</span> <span class="n">contract_calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_expression</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">guard</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract_calls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">Stmts</span><span class="p">(</span><span class="n">contract_calls</span> <span class="o">+</span> <span class="p">[</span><span class="n">IfStmt</span><span class="p">(</span><span class="n">guard</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">then_block</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">else_block</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">WhileStmt</span><span class="p">):</span>
+            <span class="n">guard</span><span class="p">,</span> <span class="n">contract_calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_expression</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">guard</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract_calls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">Stmts</span><span class="p">([</span>
+                <span class="n">WhileStmt</span><span class="p">(</span><span class="n">BooleanAtom</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">Block</span><span class="p">(</span>
+                    <span class="n">contract_calls</span> <span class="o">+</span> <span class="p">[</span>
+                        <span class="n">IfStmt</span><span class="p">(</span>
+                            <span class="n">guard</span><span class="p">,</span>
+                            <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+                            <span class="n">Block</span><span class="p">(</span>
+                                <span class="p">([]</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">else_block</span> <span class="k">else</span> <span class="n">node</span><span class="o">.</span><span class="n">else_block</span><span class="o">.</span><span class="n">stmts</span><span class="p">)</span> <span class="o">+</span>
+                                <span class="p">[</span><span class="n">BreakStmt</span><span class="p">()]))</span>
+                    <span class="p">]))</span>
+            <span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">process_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Expression</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ASTNode</span><span class="p">]]:</span>
+        <span class="n">call_transformer</span> <span class="o">=</span> <span class="n">ReplaceFunctionCallsTransformer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">used_variables</span><span class="p">,</span>
+            <span class="p">{</span><span class="n">function_name</span> <span class="k">for</span> <span class="n">function_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contracts</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+        <span class="p">)</span>
+        <span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">call_transformer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used_variables</span> <span class="o">|=</span> <span class="n">call_transformer</span><span class="o">.</span><span class="n">used_variables</span>
+
+        <span class="n">contract_calls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ASTNode</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">contract</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contracts</span><span class="p">[</span><span class="n">f_call</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+                <span class="p">[</span>
+                    <span class="n">Assert</span><span class="p">(</span><span class="n">parse_expr</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">precondition</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">code</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">f_call</span><span class="o">.</span><span class="n">args</span><span class="p">]))),</span>
+                    <span class="n">Assignment</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">parse_expr</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">return_type</span><span class="o">.</span><span class="n">default_literal</span><span class="p">)),</span>
+                    <span class="n">Havoc</span><span class="p">(</span><span class="n">variable</span><span class="p">),</span>
+                    <span class="n">Assume</span><span class="p">(</span><span class="n">parse_expr</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">postcondition</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">code</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">f_call</span><span class="o">.</span><span class="n">args</span><span class="p">],</span> <span class="n">variable</span><span class="p">))),</span>
+                <span class="p">]</span>
+            <span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">f_call</span> <span class="ow">in</span> <span class="n">call_transformer</span><span class="o">.</span><span class="n">replacements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">expression</span><span class="p">,</span> <span class="n">contract_calls</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_minipy docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertion_point</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="c1"># assume Sorted(t)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">i</span>
+
+
+<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="c1"># assume 0 &lt;= at and at &lt;= len(t)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">at</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">elem</span><span class="p">,)</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">elem</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">insertion_point</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1, 3, 4, 7, 9)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, -1, 3, 7, 9)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sort</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1, 3, 7, 9)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point_program</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def insertion_point(x: int, t: tuple) -&gt; int:</span>
+<span class="s2">    assume Sorted(t)</span>
+<span class="s2">    i = 0</span>
+<span class="s2">    while i &lt; len(t):</span>
+<span class="s2">        if t[i] &gt;= x:</span>
+<span class="s2">            break</span>
+
+<span class="s2">        i = i + 1</span>
+
+<span class="s2">    assert PostInsertionPoint(x, t, i)</span>
+<span class="s2">    return i</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert_program</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def insert(elem: int, at: int, t: tuple) -&gt; tuple:</span>
+<span class="s2">    assume 0 &lt;= at and at &lt;= len(t)</span>
+
+<span class="s2">    result = tuple()</span>
+<span class="s2">    i = 0</span>
+<span class="s2">    while i &lt; at:</span>
+<span class="s2">        result = result + (t[i], )</span>
+<span class="s2">        i = i + 1</span>
+
+<span class="s2">    result = result + (elem, )</span>
+
+<span class="s2">    while i &lt; len(t):</span>
+<span class="s2">        result = result + (t[i], )</span>
+<span class="s2">        i = i + 1</span>
+
+<span class="s2">    assert PostInsert(elem, at, t, result)</span>
+<span class="s2">    return result</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: We do not show the permutation property of our algorithm (quite complex, goes beyond what we want to show in this section; e.g., in KeY book, special predicate defined for sequence permutations).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sort_program</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def sort(t: tuple) -&gt; tuple:</span>
+<span class="s2">    result = tuple()</span>
+
+<span class="s2">    i = 0</span>
+<span class="s2">    while i &lt; len(t):</span>
+<span class="s2">        elem = t[i]</span>
+<span class="s2">        pos = insertion_point(elem, result)</span>
+<span class="s2">        result = insert(elem, pos, result)</span>
+<span class="s2">        i = i + 1</span>
+
+<span class="s2">    assert Sorted(result) #and Permutation(t, result)</span>
+<span class="s2">    return result</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_program</span> <span class="o">=</span> <span class="n">Stmts</span><span class="p">([</span>
+    <span class="n">insertion_point_program</span><span class="p">,</span>
+    <span class="n">insert_program</span><span class="p">,</span>
+    <span class="n">sort_program</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">z3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">display_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">prev_html</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">in_html_mode</span><span class="p">()</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">z3_html_escape</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">obj_to_string</span><span class="p">(</span><span class="n">formula</span><span class="p">))</span>
+              <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;BR/&gt;&quot;</span><span class="p">)</span>
+              <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;nbsp;&quot;</span><span class="p">)</span>
+             <span class="p">)</span>
+
+    <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="n">prev_html</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">display_html</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span><span class="p">,</span> <span class="n">lv</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Ints</span><span class="p">([</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sorted_prop</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">tv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">lv</span><span class="p">],</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                        <span class="n">lv</span> <span class="o">&gt;</span> <span class="n">kv</span><span class="p">,</span>
+                        <span class="n">lv</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tv</span><span class="p">[</span><span class="n">lv</span><span class="p">]</span>
+                <span class="p">)))))</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">sorted_prop</span><span class="p">(</span><span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">&forall;k&nbsp;:<BR/>&nbsp;0&nbsp;&le;&nbsp;k&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;Length(t)&nbsp;&rArr;<BR/>&nbsp;(&forall;l&nbsp;:&nbsp;l&nbsp;&gt;&nbsp;k&nbsp;&and;&nbsp;l&nbsp;&lt;&nbsp;Length(t)&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&le;&nbsp;Nth(t,&nbsp;l))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">valuev</span><span class="p">,</span> <span class="n">kv</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Ints</span><span class="p">(</span><span class="s2">&quot;value k&quot;</span><span class="p">)</span>
+
+<span class="n">contains_prop</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">valuev</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+            <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">t</span><span class="p">),</span>
+            <span class="n">t</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">==</span> <span class="n">valuev</span>
+        <span class="p">)))</span>
+
+<span class="n">permutation_prop</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">t2</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">valuev</span><span class="p">],</span>
+            <span class="n">contains_prop</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">valuev</span><span class="p">)</span> <span class="o">==</span>
+            <span class="n">contains_prop</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">valuev</span><span class="p">)</span>
+        <span class="p">)))</span>
+
+<span class="n">permutation_prop</span><span class="p">(</span><span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t1&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t2&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Length(t1) = Length(t2) &and;
+(&forall;value :
+  (&exist;k : 0 &le; k &and; k &lt; Length(t1) &and; Nth(t1, k) = value) =
+  (&exist;k : 0 &le; k &and; k &lt; Length(t2) &and; Nth(t2, k) = value))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point_invariant</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">iv</span><span class="p">:</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+            <span class="n">iv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">iv</span> <span class="o">&lt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                        <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">iv</span><span class="p">),</span>
+                    <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">xv</span>
+                <span class="p">)</span>
+            <span class="p">)))</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">insertion_point_invariant</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0&nbsp;&le;&nbsp;i&nbsp;&and;&nbsp;i&nbsp;&le;&nbsp;Length(t)&nbsp;&and;&nbsp;(&forall;k&nbsp;:&nbsp;0&nbsp;&le;&nbsp;k&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;i&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&lt;&nbsp;x)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">post_insertion_point</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>                
+        <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">resultv</span><span class="p">,</span>
+        <span class="n">resultv</span> <span class="o">&lt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                    <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                    <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">resultv</span><span class="p">),</span>
+                <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">xv</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">ForAll</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">kv</span><span class="p">],</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span>
+                <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+                    <span class="n">kv</span> <span class="o">&gt;=</span> <span class="n">resultv</span><span class="p">,</span>
+                    <span class="n">kv</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">)),</span>
+                <span class="n">tv</span><span class="p">[</span><span class="n">kv</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">xv</span>
+            <span class="p">)</span>
+        <span class="p">)))</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">post_insertion_point</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0&nbsp;&le;&nbsp;result&nbsp;&and;<BR/>result&nbsp;&le;&nbsp;Length(t)&nbsp;&and;<BR/>(&forall;k&nbsp;:&nbsp;0&nbsp;&le;&nbsp;k&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;result&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&lt;&nbsp;x)&nbsp;&and;<BR/>(&forall;k&nbsp;:&nbsp;k&nbsp;&ge;&nbsp;result&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;Length(t)&nbsp;&rArr;&nbsp;Nth(t,&nbsp;k)&nbsp;&ge;&nbsp;x)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point_loop</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span>
+    <span class="n">FilterASTVisitor</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">insertion_point_program</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">WhileStmt</span><span class="p">))))</span>
+<span class="n">loop_scope_transformer</span> <span class="o">=</span> <span class="n">LoopScopeTransformer</span><span class="p">({</span><span class="n">insertion_point_loop</span><span class="p">:</span> <span class="n">parse_expr</span><span class="p">(</span><span class="s2">&quot;InsertionPointInv(x, t, i)&quot;</span><span class="p">)})</span>
+<span class="n">insertion_point_loop_scopes</span> <span class="o">=</span> <span class="n">insertion_point_program</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">loop_scope_transformer</span><span class="p">)</span>
+<span class="n">display_program</span><span class="p">(</span><span class="n">insertion_point_loop_scopes</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertion_point</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">assume</span> <span class="n">Sorted</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">InsertionPointInv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">havoc</span> <span class="n">i</span>
+    <span class="n">assume</span> <span class="n">InsertionPointInv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">-</span><span class="n">scope</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="n">InsertionPointInv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">PostInsertionPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_full-width tag_output_scroll docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">(</span><span class="n">predicates</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;Sorted&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">sorted_prop</span><span class="p">),</span>
+    <span class="s2">&quot;InsertionPointInv&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">insertion_point_invariant</span><span class="p">),</span>
+    <span class="s2">&quot;PostInsertionPoint&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">post_insertion_point</span><span class="p">),</span>
+    <span class="s2">&quot;len&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">insertion_point_set</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute_function_body</span><span class="p">(</span><span class="s2">&quot;insertion_point&quot;</span><span class="p">,</span> <span class="n">insertion_point_loop_scopes</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">insertion_point_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/compositional_24_0.svg" src="_images/compositional_24_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">post_insert</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">elemv</span><span class="p">,</span> <span class="n">atv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">resultv</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">SubSeq</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">atv</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">elemv</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">SubSeq</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">atv</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span> <span class="o">-</span> <span class="n">atv</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">post_insert</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;elem&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;at&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">result&nbsp;=<BR/>Concat(seq.extract(t,&nbsp;0,&nbsp;at),<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Concat(Unit(elem),<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seq.extract(t,&nbsp;at,&nbsp;Length(t)&nbsp;-&nbsp;at)))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert_invariant_1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">iv</span><span class="p">,</span> <span class="n">elemv</span><span class="p">,</span> <span class="n">atv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+        <span class="n">iv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">iv</span> <span class="o">&lt;=</span> <span class="n">atv</span><span class="p">,</span>
+        <span class="n">resultv</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">SubSeq</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">iv</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">insert_invariant_1</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;elem&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;at&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0&nbsp;&le;&nbsp;i&nbsp;&and;&nbsp;i&nbsp;&le;&nbsp;at&nbsp;&and;&nbsp;result&nbsp;=&nbsp;seq.extract(t,&nbsp;0,&nbsp;i)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert_invariant_2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">iv</span><span class="p">,</span> <span class="n">elemv</span><span class="p">,</span> <span class="n">atv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+        <span class="n">iv</span> <span class="o">&gt;=</span> <span class="n">atv</span><span class="p">,</span>
+        <span class="n">iv</span> <span class="o">&lt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+        <span class="n">resultv</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">SubSeq</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">atv</span><span class="p">),</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">elemv</span><span class="p">),</span>
+            <span class="n">z3</span><span class="o">.</span><span class="n">SubSeq</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">atv</span><span class="p">,</span> <span class="n">iv</span> <span class="o">-</span> <span class="n">atv</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">insert_invariant_2</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;elem&quot;</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;at&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">i&nbsp;&ge;&nbsp;at&nbsp;&and;<BR/>i&nbsp;&le;&nbsp;Length(t)&nbsp;&and;<BR/>result&nbsp;=<BR/>Concat(seq.extract(t,&nbsp;0,&nbsp;at),<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Concat(Unit(elem),&nbsp;seq.extract(t,&nbsp;at,&nbsp;i&nbsp;-&nbsp;at)))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insert_loops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">FilterASTVisitor</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">insert_program</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">WhileStmt</span><span class="p">)))</span>
+
+<span class="n">insert_loop_1</span> <span class="o">=</span> <span class="n">insert_loops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">insert_loop_2</span> <span class="o">=</span> <span class="n">insert_loops</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">loop_scope_transformer</span> <span class="o">=</span> <span class="n">LoopScopeTransformer</span><span class="p">({</span>
+    <span class="n">insert_loop_1</span><span class="p">:</span> <span class="n">parse_expr</span><span class="p">(</span><span class="s2">&quot;InsertInvariant1(i, elem, at, t, result)&quot;</span><span class="p">),</span>
+    <span class="n">insert_loop_2</span><span class="p">:</span> <span class="n">parse_expr</span><span class="p">(</span><span class="s2">&quot;InsertInvariant2(i, elem, at, t, result)&quot;</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="n">insert_loop_scopes</span> <span class="o">=</span> <span class="n">insert_program</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">loop_scope_transformer</span><span class="p">)</span>
+<span class="n">display_program</span><span class="p">(</span><span class="n">insert_loop_scopes</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="n">assume</span> <span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">at</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">at</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">InsertInvariant1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">havoc</span> <span class="n">i</span>
+    <span class="n">havoc</span> <span class="n">result</span>
+    <span class="n">assume</span> <span class="n">InsertInvariant1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">-</span><span class="n">scope</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="n">InsertInvariant1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">at</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">))</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="p">))</span>
+    <span class="k">assert</span> <span class="n">InsertInvariant2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">havoc</span> <span class="n">i</span>
+    <span class="n">havoc</span> <span class="n">result</span>
+    <span class="n">assume</span> <span class="n">InsertInvariant2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">-</span><span class="n">scope</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="n">InsertInvariant2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">))</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">PostInsert</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_full-width docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">(</span><span class="n">predicates</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;PostInsert&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span>
+        <span class="n">post_insert</span><span class="p">),</span>
+    <span class="s2">&quot;InsertInvariant1&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">insert_invariant_1</span><span class="p">),</span>
+    <span class="s2">&quot;InsertInvariant2&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">insert_invariant_2</span><span class="p">),</span>
+    <span class="s2">&quot;len&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">insert_set</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute_function_body</span><span class="p">(</span><span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="n">insert_loop_scopes</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">insert_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/compositional_30_0.svg" src="_images/compositional_30_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sort_invariant</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">iv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">resultv</span><span class="p">:</span>
+    <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span>
+        <span class="n">iv</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">iv</span> <span class="o">&lt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">resultv</span><span class="p">)</span> <span class="o">==</span> <span class="n">iv</span><span class="p">,</span>
+        <span class="n">sorted_prop</span><span class="p">(</span><span class="n">resultv</span><span class="p">),</span>
+        <span class="c1">#permutation_prop(resultv, z3.SubSeq(tv, z3.IntVal(0), iv))</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">display_formula</span><span class="p">(</span><span class="n">sort_invariant</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0&nbsp;&le;&nbsp;i&nbsp;&and;<BR/>i&nbsp;&le;&nbsp;Length(t)&nbsp;&and;<BR/>Length(result)&nbsp;=&nbsp;i&nbsp;&and;<BR/>(&forall;k&nbsp;:<BR/>&nbsp;&nbsp;0&nbsp;&le;&nbsp;k&nbsp;&and;&nbsp;k&nbsp;&lt;&nbsp;Length(result)&nbsp;&rArr;<BR/>&nbsp;&nbsp;(&forall;l&nbsp;:<BR/>&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;&gt;&nbsp;k&nbsp;&and;&nbsp;l&nbsp;&lt;&nbsp;Length(result)&nbsp;&rArr;<BR/>&nbsp;&nbsp;&nbsp;&nbsp;Nth(result,&nbsp;k)&nbsp;&le;&nbsp;Nth(result,&nbsp;l)))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sort_loop</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span>
+    <span class="n">FilterASTVisitor</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">sort_program</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">WhileStmt</span><span class="p">))))</span>
+<span class="n">loop_scope_transformer</span> <span class="o">=</span> <span class="n">LoopScopeTransformer</span><span class="p">({</span><span class="n">sort_loop</span><span class="p">:</span> <span class="n">parse_expr</span><span class="p">(</span><span class="s2">&quot;SortInv(i, t, result)&quot;</span><span class="p">)})</span>
+<span class="n">sort_loop_scopes</span> <span class="o">=</span> <span class="n">sort_program</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">loop_scope_transformer</span><span class="p">)</span>
+<span class="n">display_program</span><span class="p">(</span><span class="n">sort_loop_scopes</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">havoc</span> <span class="n">i</span>
+    <span class="n">havoc</span> <span class="n">elem</span>
+    <span class="n">havoc</span> <span class="n">pos</span>
+    <span class="n">havoc</span> <span class="n">result</span>
+    <span class="n">assume</span> <span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">-</span><span class="n">scope</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+            <span class="n">elem</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">insertion_point</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">Sorted</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">insertion_point_contract</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span>
+    <span class="n">precondition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Sorted(</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">postcondition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;PostInsertionPoint(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">return_type</span><span class="o">=</span><span class="n">INT_TYPE</span>
+<span class="p">)</span>
+
+<span class="n">insert_contract</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span>
+    <span class="n">precondition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;0 &lt;= </span><span class="si">{</span><span class="n">at</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">at</span><span class="si">}</span><span class="s2"> &lt;= len(</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">postcondition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">elem</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;PostInsert(</span><span class="si">{</span><span class="n">elem</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">at</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">return_type</span><span class="o">=</span><span class="n">TUPLE_TYPE</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compositional_transformer</span> <span class="o">=</span> <span class="n">CompositionalSETransformer</span><span class="p">(</span>
+    <span class="n">sort_loop_scopes</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;insertion_point&quot;</span><span class="p">:</span> <span class="n">insertion_point_contract</span><span class="p">,</span>
+        <span class="s2">&quot;insert&quot;</span><span class="p">:</span> <span class="n">insert_contract</span>
+    <span class="p">})</span>
+<span class="n">sort_compositional</span> <span class="o">=</span> <span class="n">sort_loop_scopes</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">compositional_transformer</span><span class="p">)</span>
+
+<span class="n">display_program</span><span class="p">(</span><span class="n">sort_compositional</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">havoc</span> <span class="n">i</span>
+    <span class="n">havoc</span> <span class="n">elem</span>
+    <span class="n">havoc</span> <span class="n">pos</span>
+    <span class="n">havoc</span> <span class="n">result</span>
+    <span class="n">assume</span> <span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">-</span><span class="n">scope</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="n">SortInv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+            <span class="n">elem</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">Sorted</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">var_0</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">havoc</span> <span class="n">var_0</span>
+            <span class="n">assume</span> <span class="n">PostInsertionPoint</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">var_0</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">var_0</span>
+            <span class="k">assert</span> <span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">pos</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+            <span class="n">var_1</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+            <span class="n">havoc</span> <span class="n">var_1</span>
+            <span class="n">assume</span> <span class="n">PostInsert</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">var_1</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">var_1</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">Sorted</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_full-width tag_output_scroll docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">(</span><span class="n">predicates</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;SortInv&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">sort_invariant</span><span class="p">),</span>
+    <span class="s2">&quot;Sorted&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">sorted_prop</span><span class="p">),</span>
+    <span class="c1">#&quot;Permutation&quot;: ((z3.SeqSort(z3.IntSort()), z3.SeqSort(z3.IntSort())), z3.BoolSort(), permutation_prop),</span>
+    <span class="s2">&quot;PostInsertionPoint&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span> <span class="n">post_insertion_point</span><span class="p">),</span>
+    <span class="s2">&quot;PostInsert&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())),</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolSort</span><span class="p">(),</span>
+        <span class="n">post_insert</span><span class="p">),</span>
+    <span class="s2">&quot;len&quot;</span><span class="p">:</span> <span class="p">((</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()),),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">sort_set</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute_function_body</span><span class="p">(</span><span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="n">sort_compositional</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">sort_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/compositional_35_0.svg" src="_images/compositional_35_0.svg" /></div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id7"><dl class="citation">
+<dt class="label" id="id172"><span class="brackets"><a class="fn-backref" href="#id5">ABB+00</a></span></dt>
+<dd><p>Wolfgang Ahrendt, Thomas Baar, Bernhard Beckert, Martin Giese, Elmar Habermalz, Reiner Hähnle, Wolfram Menzel, and Peter H. Schmitt. The KeY Approach: Integrating Object Oriented Design and Formal Verification. In Manuel Ojeda-Aciego, Inman P. de Guzmán, Gerhard Brewka, and Lu\'ıs Moniz Pereira, editors, <em>Logics in Artificial Intelligence, European Workshop, JELIA 2000 Malaga, Spain, September 29 - October 2, 2000, Proceedings</em>, volume 1919 of Lecture Notes in Computer Science, 21–36. Springer, 2000. URL: <a class="reference external" href="https://doi.org/10.1007/3-540-40006-0\_3">https://doi.org/10.1007/3-540-40006-0\_3</a>, <a class="reference external" href="https://doi.org/10.1007/3-540-40006-0\_3">doi:10.1007/3-540-40006-0\_3</a>.</p>
+</dd>
+<dt class="label" id="id178"><span class="brackets"><a class="fn-backref" href="#id4">AGT08</a></span></dt>
+<dd><p>Saswat Anand, Patrice Godefroid, and Nikolai Tillmann. Demand-Driven Compositional Symbolic Execution. In <em>Proc. of the 14th Intl. Conf.  on Tools and Algorithms for the Construction and Analysis of Systems</em>, 367–381. Springer, 2008.</p>
+</dd>
+<dt class="label" id="id154"><span class="brackets"><a class="fn-backref" href="#id1">BCCDElia+18</a></span></dt>
+<dd><p>Roberto Baldoni, Emilio Coppa, Daniele Cono D'Elia, Camil Demetrescu, and Irene Finocchi. A Survey of Symbolic Execution Techniques. <em>ACM Comput. Surv.</em>, 51(3):50:1–50:39, 2018. <a class="reference external" href="https://doi.org/10.1145/3182657">doi:10.1145/3182657</a>.</p>
+</dd>
+<dt class="label" id="id38"><span class="brackets"><a class="fn-backref" href="#id2">God07</a></span></dt>
+<dd><p>Patrice Godefroid. Compositional Dynamic Test Generation. In Martin Hofmann and Matthias Felleisen, editors, <em>Proceedings of the 34th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL)</em>, 47–54. ACM, 2007. URL: <a class="reference external" href="https://doi.org/10.1145/1190216.1190226">https://doi.org/10.1145/1190216.1190226</a>, <a class="reference external" href="https://doi.org/10.1145/1190216.1190226">doi:10.1145/1190216.1190226</a>.</p>
+</dd>
+<dt class="label" id="id36"><span class="brackets"><a class="fn-backref" href="#id6">Mey92</a></span></dt>
+<dd><p>Bertrand Meyer. Applying “Design by Contract”. <em>Computer</em>, 25(10):40–51, 1992. URL: <a class="reference external" href="https://doi.org/10.1109/2.161279">https://doi.org/10.1109/2.161279</a>, <a class="reference external" href="https://doi.org/10.1109/2.161279">doi:10.1109/2.161279</a>.</p>
+</dd>
+<dt class="label" id="id37"><span class="brackets"><a class="fn-backref" href="#id3">RHS95</a></span></dt>
+<dd><p>Thomas W. Reps, Susan Horwitz, and Shmuel Sagiv. Precise Interprocedural Dataflow Analysis via Graph Reachability. In Ron K. Cytron and Peter Lee, editors, <em>Proceedints 22nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL)</em>, 49–61. ACM Press, 1995. URL: <a class="reference external" href="https://doi.org/10.1145/199448.199462">https://doi.org/10.1145/199448.199462</a>, <a class="reference external" href="https://doi.org/10.1145/199448.199462">doi:10.1145/199448.199462</a>.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="static_loops.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Loops in Static Symbolic Execution</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="concolic.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Concolic Execution</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Dominic Steinhöfel<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

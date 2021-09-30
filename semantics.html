@@ -1,0 +1,1136 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syntax and Semantics of Symbolic States &#8212; Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/page.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="A Symbolic Interpreter and Correctness of Symbolic Transitions" href="symbolic_interpreter.html" />
+    <link rel="prev" title="Constraint Solving" href="constraint_solving.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="minipy.html">
+   Parser and Interpreter for minipy
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="foundations.html">
+   Foundations
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="constraint_solving.html">
+     Constraint Solving
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Syntax and Semantics of Symbolic States
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="symbolic_interpreter.html">
+     A Symbolic Interpreter and Correctness of Symbolic Transitions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="correctness.html">
+     Correctness of Symbolic Transitions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="techniques.html">
+   Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transparent_function_execution.html">
+     Transparent Symbolic Execution of Function Calls
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="static_loops.html">
+     Loops in Static Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="compositional.html">
+     Compositional Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concolic.html">
+     Concolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stateexplosion.html">
+     Tackling State Explosion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="selective.html">
+     Selective Symbolic Execution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="applications.html">
+   Applications
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proving.html">
+     Program Proving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fuzzing.html">
+     Symbolic Fuzzing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     Symbolic Debugging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perspectives.html">
+   Future Perspectives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="conclusion.html">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/semantics.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh/issues/new?title=Issue%20on%20page%20%2Fsemantics.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="syntax-and-semantics-of-symbolic-states">
+<h1>Syntax and Semantics of Symbolic States<a class="headerlink" href="#syntax-and-semantics-of-symbolic-states" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">minipy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">constraint_solving</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Symbolic states are the basic building blocks of symbolic execution. They differ from concrete execution states inasmuch that program variables are assigned symbolic instead of concrete expressions, and that they include an additional path constraint accumulating decisions taken during symbolic execution.</p>
+<p><strong>Definition</strong> (Symbolic Execution State). A <em>Symbolic (Execution) State</em> (SES) is a triple <span class="math notranslate nohighlight">\((\mathit{Constraint}, \mathit{Store}, \mathit{PC})\)</span> of (1) a <em>path constraint</em> <span class="math notranslate nohighlight">\(\mathit{Constraint}\)</span>, formally a set of formulas over program variables, (2) a <em>symbolic store</em> <span class="math notranslate nohighlight">\(\mathit{Store}\)</span>, formally a set of assignments of program variables to symbolic expressions over program variables, and (3) a <em>program counter</em> <span class="math notranslate nohighlight">\(\mathit{PC}\)</span>, formally a minipy program. We write <span class="math notranslate nohighlight">\(\mathit{SEStates}\)</span> for the set of all symbolic states.</p>
+<p>Symbolic values in minipy are arithmetic expressions, boolean expressions, or sequences. Instead of defining our own language for symbolic expressions, we go for a shallow embedding into the language of the z3 SMT solver <a class="footnote-reference brackets" href="#z3" id="id1">1</a>. To represent tuples, we use z3’s <code class="docutils literal notranslate"><span class="pre">SeqRef</span></code> type for sequences. <code class="docutils literal notranslate"><span class="pre">SeqRef</span></code> does not permit expressing nested sequences. To add nested sequences as symbolic values, we would have to go for a deeper embedding, which we abstain from for simplicity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">z3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SymbolicValueType</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">ArithRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first need a procedure to produce a symbolic z3 expression for a minipy Variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Variable</span><span class="p">(</span><span class="n">Variable</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_z3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">INT_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">BOOL_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">Bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">TUPLE_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z3_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Consider, for example, the program <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>, which increments the initial, symbolic value of the integer variable <code class="docutils literal notranslate"><span class="pre">x</span></code>. The resulting symbolic value is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">symbolic_increment_expression</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">symbolic_increment_expression</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">x + 1</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">symbolic_increment_expression</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ArithRef&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A symbolic sequence (which represents a non-nested minipy tuple) is defined the <code class="docutils literal notranslate"><span class="pre">z3.Unit</span></code> and <code class="docutils literal notranslate"><span class="pre">z3.Concat</span></code> primitives. We define a helper function transforming Python integer lists to z3 sequences:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">int_list_to_seq</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">Empty</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">SeqSort</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">()))</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">l</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list_to_seq</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Concat(Unit(1), Concat(Unit(2), Unit(3)))</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list_to_seq</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])[</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Nth(Concat(Unit(1), Concat(Unit(2), Unit(3))), 1)</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">int_list_to_seq</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])[</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">2</div></div>
+</div>
+<p>We can now implement a symbolic store. In essence, a symbolic store is just a mapping from variables to symbolic values (our implementation contains some “gimmicks” like a suitable equality check and conversion to pretty-printed HTML code):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+
+<span class="k">def</span> <span class="nf">display_html</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">inp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="n">SymbolicValueType</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">env</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="n">SymbolicValueType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SymbolicStore</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">env</span>
+    
+    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Variable</span><span class="p">]:</span>
+        <span class="n">maybe_var</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">maybe_var</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_var</span> <span class="k">else</span> <span class="n">maybe_var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    
+    <span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prev_html</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">in_html_mode</span><span class="p">()</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">z3_html_escape</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">obj_to_string</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+                                  <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="n">prev_html</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">display_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_html</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SymbolicStore(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">z3_html_escape</span><span class="p">(</span><span class="n">html_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">html_input</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We overload the Python’s <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> function to access elements of the store using dictionary syntax <code class="docutils literal notranslate"><span class="pre">store[variable]</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Variable</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">maybe_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">maybe_var</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown variable </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">maybe_var</span><span class="p">]</span>
+
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt to read uninitialized variable </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also need a setter function. We design symbolic stores to be immutable, which is why the setter returns a new store:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">SymbolicValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicStore&#39;</span><span class="p">:</span>
+        <span class="n">new_env</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">new_env</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SymbolicStore</span><span class="p">(</span><span class="n">new_env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Back to our <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code> example: Assume we start symbolic execution in a state where variable <code class="docutils literal notranslate"><span class="pre">x</span></code> is assigned its unknown, initial symbolic value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()})</span>
+<span class="n">store</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">{x: x}</div></div>
+</div>
+<p>Now, we update the value of <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">store</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">{x: 1 + x}</div></div>
+</div>
+<p>What happens when we do that once again?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">store</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">{x: 1 + x}</div></div>
+</div>
+<p>This could have been expected form our definition of the <code class="docutils literal notranslate"><span class="pre">set</span></code> method; however, it is not desirable: Since the current value of <code class="docutils literal notranslate"><span class="pre">x</span></code> was <em>already</em> <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>, it should be <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">2</span></code> after adding <code class="docutils literal notranslate"><span class="pre">1</span></code> another time! We have to consider the current assignments of variables occurring in symbolic expressions. In other words, we have to <em>apply</em> existing assignments to symbolic expressions. Consequently, we define an <code class="docutils literal notranslate"><span class="pre">apply_to</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">subst</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">,</span> <span class="n">subst_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">ExprRef</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">is_expr</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="k">for</span> <span class="n">lhs</span> <span class="ow">in</span> <span class="n">subst_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">is_expr</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="k">for</span> <span class="n">rhs</span> <span class="ow">in</span> <span class="n">subst_map</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">lhs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">sort</span><span class="p">())</span> <span class="k">for</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span> <span class="ow">in</span> <span class="n">subst_map</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> \
+           <span class="s2">&quot;LHS sorts don&#39;t equal RHS sorts: &quot;</span> <span class="o">+</span> \
+           <span class="nb">str</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lhs</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">lhs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rhs</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">rhs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+               <span class="k">for</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span> <span class="ow">in</span> <span class="n">subst_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+               <span class="k">if</span> <span class="ow">not</span> <span class="n">lhs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">sort</span><span class="p">())})</span>
+    
+    <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">subst_map</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+
+<span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onto</span><span class="p">:</span> <span class="n">SymbolicValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicValueType</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span>
+            <span class="n">subst</span><span class="p">(</span><span class="n">onto</span><span class="p">,</span> <span class="p">{</span><span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+                         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try it out:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)})</span>
+<span class="n">store</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">2 + x</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">2 + x</div></div>
+</div>
+<p>We use this to correct our <code class="docutils literal notranslate"><span class="pre">set</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">SymbolicValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicStore&#39;</span><span class="p">:</span>
+        <span class="n">new_env</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">new_env</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SymbolicStore</span><span class="p">(</span><span class="n">new_env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">)})</span>
+<span class="n">store</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">{x: x + 1}</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">+</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">store</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">2 + x</div></div>
+</div>
+<p>We call our Python representation of symbolic states <em>symbolic environments</em> to align with our concrete minipy interpreter. Analogously to concrete environments, a symbolic environment contains a store and a repository of registered functions. Additionally, it comprises the set of path constraints. Symbolic environments are immutable. We define a function <code class="docutils literal notranslate"><span class="pre">unsatisfiable</span></code> which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if if can be shown that the set of path constraints is unsatisfiable, which is vital for symbolic execution: It enables a better performing analysis since we do not have to follow infeasible branches, and is necessary in verification to judge whether, e.g., assertions are met or failed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicEnvironment</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">store</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SymbolicStore</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">path_constraints</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">:</span> <span class="n">SymbolicStore</span> <span class="o">=</span> <span class="n">SymbolicStore</span><span class="p">()</span> <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">set</span><span class="p">()</span> <span class="k">if</span> <span class="n">path_constraints</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="nb">set</span><span class="p">([</span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">path_constraint</span><span class="p">)</span> <span class="k">for</span> <span class="n">path_constraint</span> <span class="ow">in</span> <span class="n">path_constraints</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> \
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">functions</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">functions</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Variable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SymbolicValueType</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">SymbolicValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicEnvironment&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">constraints</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicEnvironment&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicEnvironment&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">z3</span><span class="o">.</span><span class="n">is_false</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">constraint</span><span class="p">)):</span>
+            <span class="n">new_constraints</span> <span class="o">=</span> <span class="p">{</span><span class="n">z3</span><span class="o">.</span><span class="n">BoolVal</span><span class="p">(</span><span class="kc">False</span><span class="p">)}</span>
+        <span class="k">elif</span> <span class="n">z3</span><span class="o">.</span><span class="n">is_true</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">constraint</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">old_constraints</span> <span class="o">=</span> <span class="p">{</span><span class="n">other_constraint</span> <span class="k">for</span> <span class="n">other_constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span>
+                               <span class="k">if</span> <span class="ow">not</span> <span class="n">implies</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">other_constraint</span><span class="p">)}</span>
+            <span class="n">new_constraints</span> <span class="o">=</span> <span class="n">old_constraints</span> <span class="o">|</span> <span class="p">{</span><span class="n">constraint</span><span class="p">}</span>
+
+
+        <span class="k">return</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="n">new_constraints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span> <span class="nb">type</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">impl</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SymbolicEnvironment&#39;</span><span class="p">:</span>
+        <span class="n">new_functions</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+        <span class="n">new_functions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">impl</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">,</span> <span class="n">new_functions</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">unsatisfiable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">is_unsat</span><span class="p">(</span><span class="n">z3_and</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">constraint</span> <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">]))</span>
+        
+    <span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prev_html</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">in_html_mode</span><span class="p">()</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path_constraint_to_html</span><span class="p">()</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="n">prev_html</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">path_constraint_to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prev_html</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">in_html_mode</span><span class="p">()</span>
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">path_constraint_string</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">:</span>
+            <span class="n">path_constraint_string</span> <span class="o">+=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">z3_html_escape</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">obj_to_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">)))</span>
+        <span class="n">path_constraint_string</span> <span class="o">+=</span> <span class="s2">&quot;}&quot;</span>
+        <span class="n">path_constraint_string</span> <span class="o">=</span> <span class="n">path_constraint_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;BR/&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;nbsp;&quot;</span><span class="p">)</span>
+
+        <span class="n">z3</span><span class="o">.</span><span class="n">set_html_mode</span><span class="p">(</span><span class="n">prev_html</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path_constraint_string</span>
+    
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">display_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_html</span><span class="p">())</span>
+    
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SymbolicEnvironment(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span> \
+                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="nb">repr</span><span class="p">({</span><span class="n">f_name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;fun </span><span class="si">{</span><span class="n">f_name</span><span class="si">}{</span><span class="n">params</span><span class="si">}</span><span class="s2"> -&gt; &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">f_name</span><span class="p">,</span> <span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">store</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">path_constraints</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">functions</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To illustrate the idea of symbolic environments with path conditions, consider the following minipy program:</p>
+<div class="cell tag_minipy docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>SE starts with an empty environment assigning symbolic values to both <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()}))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Executing the first assignment updates the symbolic store:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">())</span>
+<span class="n">env</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">({}, {x: 2&middot;y, y: y})</div></div>
+</div>
+<p>Next, we perform a case distinction on the guard of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, which yields two environments:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_1</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+<span class="n">env_2</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_1</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">({&not;(y&nbsp;&ge;&nbsp;0)}, {x: 2&middot;y, y: y})</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_2</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">({y&nbsp;&ge;&nbsp;0}, {x: 2&middot;y, y: y})</div></div>
+</div>
+<p>Note that we applied the initial assignment to the path constraint. For the <code class="docutils literal notranslate"><span class="pre">env_1</span></code> environment, where we entered the then branch of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, we now execute the inversion of <code class="docutils literal notranslate"><span class="pre">x</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_1_1</span> <span class="o">=</span> <span class="n">env_1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">())</span>
+<span class="n">env_1_1</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">({&not;(y&nbsp;&ge;&nbsp;0)}, {x: -2&middot;y, y: y})</div></div>
+</div>
+<p>What is the semantics of the environment <code class="docutils literal notranslate"><span class="pre">env_1_1</span></code>? Imagine that we did start the example program with a concrete value for <code class="docutils literal notranslate"><span class="pre">y</span></code> (the initial value of <code class="docutils literal notranslate"><span class="pre">x</span></code> is irrelevant, since it is overwritten):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+    
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, -2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Obviously, for an initial negative value of <code class="docutils literal notranslate"><span class="pre">y</span></code>, the final value of <code class="docutils literal notranslate"><span class="pre">x</span></code> is twice that inverted value. The astute reader might recognize the similarity to the symbolic environment {¬(y ≥ 0)}, {x: -2·y, y: y}): Assuming that <code class="docutils literal notranslate"><span class="pre">y</span></code> is initially negative, the final value of <code class="docutils literal notranslate"><span class="pre">y</span></code> is unchanged, while the final value of <code class="docutils literal notranslate"><span class="pre">x</span></code> twice the inverted initial value of <code class="docutils literal notranslate"><span class="pre">y</span></code>. The semantics of symbolic states is defined just like that: For any initial concrete state satisfying the path constraint, the symbolic state represents the assignments resulting from evaluating variables in the symbolic store in that concrete state. This process is called the <em>concretization</em> of the symbolic state. If we concretize a symbolic state from any concrete state, we obtain its full semantics.</p>
+<p>We first define the concretization of symbolic stores. Let <span class="math notranslate nohighlight">\(\mathit{ConcrStates}\)</span> be the set of all concrete states (mappings from program variables to concrete values). Then, the concretization of a symbolic store <span class="math notranslate nohighlight">\(\mathit{Store}\)</span> with respect to a concrete store <span class="math notranslate nohighlight">\(\sigma\in\mathit{ConcrStates}\)</span> is a concrete store <span class="math notranslate nohighlight">\(\sigma'\in\mathit{ConcrStates}\)</span> such that (1) for all <span class="math notranslate nohighlight">\(\mathtt{x}\)</span> in the environment of <span class="math notranslate nohighlight">\(\mathit{Store}\)</span>, <span class="math notranslate nohighlight">\(\sigma'(\mathtt{x})\)</span> equals the right-hand side of <span class="math notranslate nohighlight">\(\mathtt{x}\)</span> in <span class="math notranslate nohighlight">\(\mathit{Store}\)</span> when evaluating all occurring program variables in <span class="math notranslate nohighlight">\(\sigma\)</span>, and (2) <span class="math notranslate nohighlight">\(\sigma(\mathtt{y})=\sigma'(\mathtt{y})\)</span> for all other program variables <span class="math notranslate nohighlight">\(\mathtt{y}\)</span> not occurring in <span class="math notranslate nohighlight">\(\mathit{Store}\)</span>. This is easy to implement for our <code class="docutils literal notranslate"><span class="pre">SymbolicStore</span></code> class:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicStore</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">concretize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
+        <span class="n">subst_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">():</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">base_store</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">base_store</span><span class="o">.</span><span class="n">env</span><span class="p">}</span>
+        <span class="n">new_env</span> <span class="o">=</span> <span class="p">{</span><span class="n">variable</span><span class="p">:</span> <span class="n">z3_expr_to_python_expr</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">subst</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">subst_map</span><span class="p">)))</span>
+                   <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">}</span>
+        <span class="n">new_env</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">variable</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">base_store</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">variable</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">Store</span><span class="p">(</span><span class="n">new_env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The method <code class="docutils literal notranslate"><span class="pre">concretize</span></code> depends on two functions converting back and forth between Python / minipy and z3 expressions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">ArithRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolVal</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">int_list_to_seq</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">z3_expr_to_python_expr</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">IntNumRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntNumRef</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">expr</span><span class="o">.</span><span class="n">as_long</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">z3</span><span class="o">.</span><span class="n">is_true</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">z3</span><span class="o">.</span><span class="n">is_false</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">assert</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sub_expr</span> <span class="ow">in</span> <span class="n">visit_z3_expr</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">sub_expr</span><span class="o">.</span><span class="n">decl</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Z3_OP_SEQ_UNIT</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_long</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">Store</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">})))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 4, y: -2}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following definition of the concretization function is a simplified version of the original definition in <span id="id2">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>: We assume that there is one fixed interpretation for all function symbols occurring in symbolic states (e.g., for arithmetic functions such as addition) and that there do not appear uninterpreted constants. Thus, we do not need to index the concretization function with a first-order structure. The definition furthermore assumes a set <span class="math notranslate nohighlight">\(\mathit{ConcrStates}\)</span> of concrete states (mappings from program variables to concrete values) and a <em>transition relation</em> <span class="math notranslate nohighlight">\(\rho(p)\)</span> for every program <span class="math notranslate nohighlight">\(p\)</span> which consists of all pairs <span class="math notranslate nohighlight">\((\sigma, \sigma')\)</span> such that executing <span class="math notranslate nohighlight">\(p\)</span> in the state <span class="math notranslate nohighlight">\(\sigma\in\mathit{ConcrStates}\)</span> results in the state <span class="math notranslate nohighlight">\(\sigma'\in\mathit{ConcrStates}\)</span>.</p>
+<p><strong>Definition</strong> (Concretization Function). The <em>concretization function</em> <span class="math notranslate nohighlight">\(\mathit{concr}: \mathit{SEStates} \, \times \, \mathit{ConcrStates} \rightarrow 2^{\mathit{ConcrStates}}\)</span> maps an SES <span class="math notranslate nohighlight">\((\mathit{Constraint},\mathit{Store},\mathit{PC})\)</span> and a concrete state <span class="math notranslate nohighlight">\(\sigma\in\mathit{ConcrStates}\)</span> (1) to the empty set <span class="math notranslate nohighlight">\(\emptyset\)</span> if either the the set <span class="math notranslate nohighlight">\(\mathit{Constraint}\)</span> does not hold in <span class="math notranslate nohighlight">\(\sigma\)</span>, <em>or</em>, where <span class="math notranslate nohighlight">\(\sigma'\in\mathit{ConcrStates}\)</span> is the concretization of <span class="math notranslate nohighlight">\(\mathit{Store}\)</span> with respect to <span class="math notranslate nohighlight">\(\sigma\)</span>, there is no <span class="math notranslate nohighlight">\(\sigma''\)</span> such that <span class="math notranslate nohighlight">\((\sigma', \sigma'')\in\rho(\mathit{PC}))\)</span>, or otherwise (2) the singleton set <span class="math notranslate nohighlight">\(\{\sigma''\}\)</span> such that <span class="math notranslate nohighlight">\((\sigma', \sigma'')\in\rho(\mathit{PC}))\)</span>, where <span class="math notranslate nohighlight">\(\sigma'\)</span> is as before.</p>
+<p>In other words: If the path constraint is not satisfied by the given initial concrete store, the concretization is empty. Otherwise, the concretization is the concrete state resulting from executing the program counter starting in the concretization of the symbolic store starting in the initial concrete store. If the program counter diverges in this situation, the concretization is also empty.</p>
+<p>We extend our implementation of <code class="docutils literal notranslate"><span class="pre">SymbolicEnvironment</span></code> by a function <code class="docutils literal notranslate"><span class="pre">concretize</span></code>, which implements this definition up to the execution of the remaining program counter. Instead of returning either an empty set of a singleton set, we return an optional result.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicEnvironment</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">concretize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+        <span class="n">subst_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">():</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">base_store</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">base_store</span><span class="o">.</span><span class="n">env</span><span class="p">}</span>
+
+        <span class="n">concretized_path_cond</span> <span class="o">=</span> <span class="n">subst</span><span class="p">(</span><span class="n">z3_and</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">),</span> <span class="n">subst_map</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_unsat</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">concretized_path_cond</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">base_store</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_1_1</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">({&not;(y&nbsp;&ge;&nbsp;0)}, {x: -2&middot;y, y: y})</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">env_1_1</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">Store</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">})))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 4, y: -2}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">env_1_1</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">Store</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="mi">2</span><span class="p">})))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
+</pre></div>
+</div>
+</div>
+</div>
+<p>The full <code class="docutils literal notranslate"><span class="pre">concr</span></code> function <a class="footnote-reference brackets" href="#concr-termination" id="id3">2</a>, including the execution of the program counter, can be implemented using our minipy interpreter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">concr</span><span class="p">(</span><span class="n">ses</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span> <span class="n">pc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="n">sigma_1</span> <span class="o">=</span> <span class="n">ses</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sigma_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="n">interpreter</span> <span class="o">=</span> <span class="n">Interpreter</span><span class="p">()</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">sigma_1</span><span class="p">)</span>
+    <span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">pc</span><span class="p">),</span> <span class="n">environment</span><span class="p">)</span>
+    <span class="n">sigma_2</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">store</span>
+    
+    <span class="k">return</span> <span class="n">sigma_2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the concretization for the symbolic state arising after the execution of the initial assignment <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span></code> of our example program, for the initial state assigning <code class="docutils literal notranslate"><span class="pre">-2</span></code> to <code class="docutils literal notranslate"><span class="pre">y</span></code>. The program counter in this case is the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement following the initial assignment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">if x &lt; 0:</span>
+<span class="s2">    x = -x</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">sigma_2</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span>
+    <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()})),</span>
+    <span class="n">pc</span><span class="p">,</span>
+    <span class="n">Store</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">})</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sigma_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 4, y: -2}
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a different initial state:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigma_2</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span>
+    <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()})),</span>
+    <span class="n">pc</span><span class="p">,</span>
+    <span class="n">Store</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sigma_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 4, y: 2}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The method <code class="docutils literal notranslate"><span class="pre">concretize</span></code> is also practically useful, as we will see when implementing a concolic interpreter: We maintain both a concrete and a symbolic state, and concretize the symbolic state with respect to the concrete state to decide which branch of, e.g., an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement to follow.</p>
+<p>The “full semantics” of symbolic states is the union over the concretization for all possible initial concrete states. We can compute a poor approximation by generating a finite amount of initial states randomly (this demo implementation only works for integer variables, only generates values in a pre-defined range, and only produces initial states which assign values to exactly the variables assigned in the symbolic environment):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ses_semantics</span><span class="p">(</span><span class="n">ses</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span> <span class="n">pc</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Store</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">Store</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ses</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">env</span><span class="p">})</span>
+        <span class="k">yield</span> <span class="n">concr</span><span class="p">(</span><span class="n">ses</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()}))</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">ses_semantics</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">pc</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 132, y: 66}
+{x: 180, y: -90}
+{x: 158, y: 79}
+{x: 116, y: 58}
+{x: 36, y: 18}
+{x: 128, y: 64}
+{x: 20, y: -10}
+{x: 46, y: 23}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{x: 46, y: -23}
+{x: 118, y: -59}
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the next section, we extend our concrete minipy interpreter to a baseline symbolic interpreter. In that section, we also derive our correctness properties <em>precision</em> and <em>exhaustiveness</em> for symbolic transition relations.</p>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id4"><dl class="citation">
+<dt class="label" id="id66"><span class="brackets"><a class="fn-backref" href="#id2">Steinhofel20</a></span></dt>
+<dd><p>Dominic Steinhöfel. <em>Abstract Execution: Automatically Proving Infinitely Many Programs</em>. PhD thesis, TU Darmstadt, Dept. of Computer Science, Darmstadt, Germany, 2020. URL: <a class="reference external" href="http://tuprints.ulb.tu-darmstadt.de/8540/">http://tuprints.ulb.tu-darmstadt.de/8540/</a>, <a class="reference external" href="https://doi.org/10.25534/tuprints-00008540">doi:10.25534/tuprints-00008540</a>.</p>
+</dd>
+</dl>
+</p>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="z3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/Z3Prover/z3">https://github.com/Z3Prover/z3</a></p>
+</dd>
+<dt class="label" id="concr-termination"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>Technically, it is not the full <code class="docutils literal notranslate"><span class="pre">concr</span></code> function, since there is, of course, no way to decide whether the program counter will terminate. In the theoretical definition, we assume that in the case of nontermination, there is no corresponding pair in the transition relation <span class="math notranslate nohighlight">\(\rho(\mathit{PC})\)</span>. Practically, <code class="docutils literal notranslate"><span class="pre">concr</span></code> will diverge if, and only if, the program counter diverges in the concretization of the symbolic store with respect to the given initial concrete store.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="constraint_solving.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Constraint Solving</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="symbolic_interpreter.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">A Symbolic Interpreter and Correctness of Symbolic Transitions</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Dominic Steinhöfel<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

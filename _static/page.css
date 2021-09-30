@@ -1,0 +1,21 @@
+.abstract {
+  margin: 0 30px;
+  border: 1px dotted black;
+  padding: 15px;
+}
+
+.tag_minipy .cell_input:before {
+    content: "minipy ⟶";
+    display: block;
+    text-align: left;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.tag_minipy .cell_input:after {
+    content: "⟵ minipy";
+    display: block;
+    text-align: right;
+    font-family: monospace;
+    font-weight: bold;
+}
