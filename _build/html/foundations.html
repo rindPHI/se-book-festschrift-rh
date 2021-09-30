@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundations &#8212; Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/page.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Constraint Solving" href="constraint_solving.html" />
+    <link rel="prev" title="Parser and Interpreter for minipy" href="minipy.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="minipy.html">
+   Parser and Interpreter for minipy
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   Foundations
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="constraint_solving.html">
+     Constraint Solving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="semantics.html">
+     Syntax and Semantics of Symbolic States
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="symbolic_interpreter.html">
+     A Symbolic Interpreter and Correctness of Symbolic Transitions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="correctness.html">
+     Correctness of Symbolic Transitions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="techniques.html">
+   Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transparent_function_execution.html">
+     Transparent Symbolic Execution of Function Calls
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="static_loops.html">
+     Loops in Static Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="compositional.html">
+     Compositional Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concolic.html">
+     Concolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stateexplosion.html">
+     Tackling State Explosion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="selective.html">
+     Selective Symbolic Execution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="applications.html">
+   Applications
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proving.html">
+     Program Proving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fuzzing.html">
+     Symbolic Fuzzing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     Symbolic Debugging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perspectives.html">
+   Future Perspectives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="conclusion.html">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/foundations.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh/issues/new?title=Issue%20on%20page%20%2Ffoundations.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="foundations">
+<h1>Foundations<a class="headerlink" href="#foundations" title="Permalink to this headline">¶</a></h1>
+<p>Since its inception in the 1970s <span id="id1">[<a class="reference internal" href="#id217"><span>Bur74</span></a>]</span> <span id="id2">[<a class="reference internal" href="#id285"><span>Kin76</span></a>]</span> <span id="id3">[<a class="reference internal" href="static_loops.html#id217"><span>DE82</span></a>]</span>, Symbolic Execution has been extensively applied for bug finding (e.g., for automated whitebox fuzzing <span id="id4">[<a class="reference internal" href="#id54"><span>GLM12</span></a>]</span> and test case generation <span id="id5">[<a class="reference internal" href="#id218"><span>CDE08</span></a>]</span>) and program verification (e.g., as a main building block for deductive software verification <span id="id6">[<a class="reference internal" href="transparent_function_execution.html#id173"><span>ABB+16</span></a>]</span>). Given its popularity, one may find it surprising that literature on the technique’s <em>semantic foundations</em> is relatively sparse. Surveys such as <span id="id7">[<a class="reference internal" href="symbolic_interpreter.html#id155"><span>BCCDElia+18</span></a>]</span> <span id="id8">[<a class="reference internal" href="#id168"><span>YFB+19</span></a>]</span> provide a high-level idea of what SE is about before quickly moving on to technical details such as the implementation of symbolic memory and solutions to the path explosion problem.</p>
+<p>The literature agrees that SE maintains (1) a <em>path condition</em> (or <em>path constraint</em>) accumulating conditions leading to the current execution path, and (2) a <em>symbolic store</em> mapping variables to (symbolic) values. Simply speaking, the store is updated by assignments, while the path condition is updated by case distinctions (e.g., an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement). Together, symbolic store and path condition form a <em>symbolic (execution) state</em>. Each such state is additionally associated to a point in the program, the <em>program counter</em>, identifying the next instruction to execute.</p>
+<p>The following questions, associated to the semantics of SE, are usually left open:</p>
+<ol class="simple">
+<li><p>What is the relation between symbolic and concrete states?</p></li>
+<li><p>What does it mean to symbolically execute? In particular,</p></li>
+<li><p>What properties must a symbolic execution satisfy to be useful for testing and/or verification?</p></li>
+</ol>
+<p>We know of four takes on the semantics of SE <span id="id9">[<a class="reference internal" href="#id286"><span>Kne91</span></a>]</span> <span id="id10">[<a class="reference internal" href="#id121"><span>LRA17</span></a>]</span> <span id="id11">[<a class="reference internal" href="#id29"><span>dBB19</span></a>]</span> <span id="id12">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>. All of them provide two complementary “correctness” properties, where usually one is related to program proving and the other one to testing, respectively. Only the system by Steinhöfel <span id="id13">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span> provides a semantics of symbolic states; the formalism by Lucanu et al. <span id="id14">[<a class="reference internal" href="#id121"><span>LRA17</span></a>]</span> does not explicitly incorporate symbolic states. With the exception of <span id="id15">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>, which develops a semantics centered around symbolic states, all formalisms explain SE by relating concrete and symbolic transition systems using some notion of simulation.</p>
+<p>The proposed correctness properties are not equivalent; yet, they generally share the same idea: One property holds for SE if <em>at least</em> all feasible paths are explored, while the other one hold if <em>at most</em> all feasible paths are explored. The exception is the earliest of the mentioned works by Kneuper <span id="id16">[<a class="reference internal" href="#id286"><span>Kne91</span></a>]</span>, who defines <em>full</em> SE as a system exploring <em>exactly</em> all feasible paths, and <em>weak</em> SE as a system exploring <em>at least</em> all feasible paths.</p>
+<p>In the following, we introduce the system proposed by Steinhöfel in <span id="id17">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>. The advantages of this particular approach to give a semantics to symbolic execution are:</p>
+<ul class="simple">
+<li><p>It is centered around smallest building block of SE, the symbolic state. The notion of <em>concretizations</em> of symbolic states, which is essential for their semantics, is also useful to define <em>concolic</em> execution later on.</p></li>
+<li><p>The approach is not restricted to either testing or verification. In contrast, e.g., the correctness properties in <span id="id18">[<a class="reference internal" href="#id286"><span>Kne91</span></a>]</span> focus on program verification, and de Boer and Bonsangue <span id="id19">[<a class="reference internal" href="#id29"><span>dBB19</span></a>]</span> drew inspiration from verification when naming their properties.</p></li>
+<li><p>Since the correctness properties in <span id="id20">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span> are based on relations between states, as opposed to transition systems, they are more fine grained: The steps in the symbolic transition system are not tied to the ones in a concrete system. If desired, such a coupling can be integrated by imposing additional, orthogonal, properties.</p></li>
+<li><p>The system supports general m-to-n transitions, which, for instance, allows to define powerful state merging rules.</p></li>
+<li><p>Its formal definitions require a relatively small overhead in terms of required underlying formalisms; the work by Lucanu et al. <span id="id21">[<a class="reference internal" href="#id121"><span>LRA17</span></a>]</span>, e.g., requires understanding the Reachability Logic of the K system.</p></li>
+</ul>
+<p>After introducing the abstract syntax and semantics of symbolic states in the next section, we define a baseline symbolic interpreter in the subsequent one, along with our correctness properties for symbolic transition relations.</p>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id22"><dl class="citation">
+<dt class="label" id="id191"><span class="brackets"><a class="fn-backref" href="#id6">ABB+16</a></span></dt>
+<dd><p>Wolfgang Ahrendt, Bernhard Beckert, Richard Bubel, Reiner Hähnle, Peter H. Schmitt, and Mattias Ulbrich, editors. <em>Deductive Software Verification – The KeY Book</em>. Volume 10001 of LNCS. Springer, 2016. <a class="reference external" href="https://doi.org/10.1007/978-3-319-49812-6">doi:10.1007/978-3-319-49812-6</a>.</p>
+</dd>
+<dt class="label" id="id169"><span class="brackets"><a class="fn-backref" href="#id7">BCCDElia+18</a></span></dt>
+<dd><p>Roberto Baldoni, Emilio Coppa, Daniele Cono D'Elia, Camil Demetrescu, and Irene Finocchi. A Survey of Symbolic Execution Techniques. <em>ACM Comput. Surv.</em>, 51(3):50:1–50:39, 2018. <a class="reference external" href="https://doi.org/10.1145/3182657">doi:10.1145/3182657</a>.</p>
+</dd>
+<dt class="label" id="id217"><span class="brackets"><a class="fn-backref" href="#id1">Bur74</a></span></dt>
+<dd><p>Rodney Matineau Burstall. Program Proving as Hand Simulation with a Little Induction. In <em>Information Processing</em>, pages 308–312. Elsevier, 1974.</p>
+</dd>
+<dt class="label" id="id218"><span class="brackets"><a class="fn-backref" href="#id5">CDE08</a></span></dt>
+<dd><p>Cristian Cadar, Daniel Dunbar, and Dawson Engler. KLEE: Unassisted and Automatic Generation of High-coverage Tests for Complex Systems Programs. In <em>8th USENIX Conference on Operating Systems Design and Implementation</em>, 209–224. Berkeley, CA, USA, 2008. USENIX Association.</p>
+</dd>
+<dt class="label" id="id230"><span class="brackets"><a class="fn-backref" href="#id3">DE82</a></span></dt>
+<dd><p>R.B. Dannenberg and G.W. Ernst. Formal Program Verification Using Symbolic Execution. <em>IEEE Transactions on Software Engineering</em>, SE-8(1):43–52, 1982.</p>
+</dd>
+<dt class="label" id="id29"><span class="brackets">dBB19</span><span class="fn-backref">(<a href="#id11">1</a>,<a href="#id19">2</a>)</span></dt>
+<dd><p>Frank S. de Boer and Marcello M. Bonsangue. On the Nature of Symbolic Execution. In <em>Proc. 3rd World Congress on Formal Methods (FM)</em>, 64–80. 2019. <a class="reference external" href="https://doi.org/10.1007/978-3-030-30942-8\_6">doi:10.1007/978-3-030-30942-8\_6</a>.</p>
+</dd>
+<dt class="label" id="id54"><span class="brackets"><a class="fn-backref" href="#id4">GLM12</a></span></dt>
+<dd><p>Patrice Godefroid, Michael Y. Levin, and David A. Molnar. SAGE: Whitebox Fuzzing for Security Testing. <em>ACM Queue</em>, 10(1):20, 2012. URL: <a class="reference external" href="https://doi.org/10.1145/2090147.2094081">https://doi.org/10.1145/2090147.2094081</a>, <a class="reference external" href="https://doi.org/10.1145/2090147.2094081">doi:10.1145/2090147.2094081</a>.</p>
+</dd>
+<dt class="label" id="id285"><span class="brackets"><a class="fn-backref" href="#id2">Kin76</a></span></dt>
+<dd><p>James C. King. Symbolic Execution and Program Testing. <em>Communications of the ACM</em>, 19(7):385–394, 1976.</p>
+</dd>
+<dt class="label" id="id286"><span class="brackets">Kne91</span><span class="fn-backref">(<a href="#id9">1</a>,<a href="#id16">2</a>,<a href="#id18">3</a>)</span></dt>
+<dd><p>Ralf Kneuper. Symbolic Execution: A Semantic Approach. <em>Sci. Comput. Program.</em>, 16(3):207–249, 1991. <a class="reference external" href="https://doi.org/10.1016/0167-6423(91)90008-L">doi:10.1016/0167-6423(91)90008-L</a>.</p>
+</dd>
+<dt class="label" id="id121"><span class="brackets">LRA17</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id14">2</a>,<a href="#id21">3</a>)</span></dt>
+<dd><p>Dorel Lucanu, Vlad Rusu, and Andrei Arusoaie. A Generic Framework for Symbolic Execution: A Coinductive Approach. <em>J. Symb. Comput.</em>, 80:125–163, 2017. <a class="reference external" href="https://doi.org/10.1016/j.jsc.2016.07.012">doi:10.1016/j.jsc.2016.07.012</a>.</p>
+</dd>
+<dt class="label" id="id84"><span class="brackets">Steinhofel20</span><span class="fn-backref">(<a href="#id12">1</a>,<a href="#id13">2</a>,<a href="#id15">3</a>,<a href="#id17">4</a>,<a href="#id20">5</a>)</span></dt>
+<dd><p>Dominic Steinhöfel. <em>Abstract Execution: Automatically Proving Infinitely Many Programs</em>. PhD thesis, TU Darmstadt, Dept. of Computer Science, Darmstadt, Germany, 2020. URL: <a class="reference external" href="http://tuprints.ulb.tu-darmstadt.de/8540/">http://tuprints.ulb.tu-darmstadt.de/8540/</a>, <a class="reference external" href="https://doi.org/10.25534/tuprints-00008540">doi:10.25534/tuprints-00008540</a>.</p>
+</dd>
+<dt class="label" id="id168"><span class="brackets"><a class="fn-backref" href="#id8">YFB+19</a></span></dt>
+<dd><p>Guowei Yang, Antonio Filieri, Mateus Borges, Donato Clun, and Junye Wen. Advances in Symbolic Execution. In Atif M. Memon, editor, <em>Advances in Computers</em>, volume 113 of Advances in Computers, pages 225 – 287. Elsevier, 2019. <a class="reference external" href="https://doi.org/https://doi.org/10.1016/bs.adcom.2018.10.002">doi:https://doi.org/10.1016/bs.adcom.2018.10.002</a>.</p>
+</dd>
+</dl>
+</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="minipy.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Parser and Interpreter for minipy</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="constraint_solving.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Constraint Solving</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Dominic Steinhöfel<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

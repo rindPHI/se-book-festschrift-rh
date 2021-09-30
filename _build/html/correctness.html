@@ -1,0 +1,797 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Correctness of Symbolic Transitions &#8212; Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/page.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Techniques" href="techniques.html" />
+    <link rel="prev" title="A Symbolic Interpreter and Correctness of Symbolic Transitions" href="symbolic_interpreter.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="minipy.html">
+   Parser and Interpreter for minipy
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="foundations.html">
+   Foundations
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="constraint_solving.html">
+     Constraint Solving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="semantics.html">
+     Syntax and Semantics of Symbolic States
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="symbolic_interpreter.html">
+     A Symbolic Interpreter and Correctness of Symbolic Transitions
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Correctness of Symbolic Transitions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="techniques.html">
+   Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transparent_function_execution.html">
+     Transparent Symbolic Execution of Function Calls
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="static_loops.html">
+     Loops in Static Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="compositional.html">
+     Compositional Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concolic.html">
+     Concolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stateexplosion.html">
+     Tackling State Explosion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="selective.html">
+     Selective Symbolic Execution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="applications.html">
+   Applications
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proving.html">
+     Program Proving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fuzzing.html">
+     Symbolic Fuzzing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     Symbolic Debugging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perspectives.html">
+   Future Perspectives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="conclusion.html">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/correctness.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh/issues/new?title=Issue%20on%20page%20%2Fcorrectness.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="correctness-of-symbolic-transitions">
+<span id="foundations-correctness"></span><h1>Correctness of Symbolic Transitions<a class="headerlink" href="#correctness-of-symbolic-transitions" title="Permalink to this headline">¶</a></h1>
+<p>A symbolic transition relation relates symbolic inputs to symbolic outputs. Our symbolic interpreter implements a transitive closure over a transition relation consisting of 1-to-n transitions: It takes one symbolic state and produces multiple outputs, resulting in a symbolic execution tree. This leads to an exponential growth of the state space; a common problem in SE. One way to approach this problem is by merging multiple states of the tree, for example after execution of both legs of an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement. Such <em>state merging</em> techniques are discussed in <a class="reference internal" href="stateexplosion.html#techniques-state-explosion"><span class="std std-ref">Tackling State Explosion</span></a>. Merging transitions are m-to-1 transitions: Multiple states are combined into one successor. The framework from <span id="id1">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>, which we present here, goes beyond that and permits m-to-n relations: An arbitrary number of input states can be combined to an arbitrary number of output states.</p>
+<p>Formally, an SE transition relation relates a <em>configuration</em> <span class="math notranslate nohighlight">\(\mathit{Cnf}\)</span>, which is a set of symbolic states, to a pair of state sets <span class="math notranslate nohighlight">\((I,O)\)</span>, such that <span class="math notranslate nohighlight">\(I\subseteq\mathit{Cnf}\)</span> is replaced by <span class="math notranslate nohighlight">\(O\)</span> in the <em>successor configuration</em>. In a standard SE system, <span class="math notranslate nohighlight">\(I\)</span> is always a singleton; for a standard state merging transition, <span class="math notranslate nohighlight">\(O\)</span> is a singleton. It is, however, not necessary to incorporate this restriction.</p>
+<p><strong>Definition</strong> (SE Configuration and Transition Relation). An <em>SE Configuration</em> is a set <span class="math notranslate nohighlight">\(\mathit{Cnf}\subseteq\mathit{SEStates}\)</span>. An <em>SE Transition Relation</em> is a relation <span class="math notranslate nohighlight">\(\delta\subseteq{}2^{\mathit{SEStates}}\times(2^{\mathit{SEStates}}\times2^{\mathit{SEStates}})\)</span> associating to a configuration <span class="math notranslate nohighlight">\(\mathit{Cnf}\)</span> transitions <span class="math notranslate nohighlight">\(t=(I,O)\)</span> of <em>input states</em> <span class="math notranslate nohighlight">\(I\subseteq\mathit{Cnf}\)</span> and output states <span class="math notranslate nohighlight">\(O\subseteq{}2^{\mathit{SEStates}}\)</span>. We call <span class="math notranslate nohighlight">\(\mathit{Cnf}\setminus{}I\cup{}O\)</span> the <em>successor configuration</em> of the transition <span class="math notranslate nohighlight">\(t\)</span> for <span class="math notranslate nohighlight">\(\mathit{Cnf}\)</span>. We write <span class="math notranslate nohighlight">\(\mathit{Cnf}\xrightarrow{t}\mathit{Cnf}'\)</span> if <span class="math notranslate nohighlight">\((\mathit{Cnf}, t)\in\delta\)</span> and <span class="math notranslate nohighlight">\(\mathit{Cnf}'\)</span> is the successor configuration of <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(\mathit{Cnf}\)</span>.</p>
+<p>Note that in this definition, the Cartesian product is not understood as associative: <span class="math notranslate nohighlight">\(\delta\)</span> is a <em>binary relation</em>, with the power set of symbolic states as domain, and pairs of sets of states as range. Since <span class="math notranslate nohighlight">\(\delta\)</span> is a binary relation and no partial function, there might be multiple transitions for each input configuration. This corresponds to different implementations of, e.g., loop execution: There might be a transition based on loop unrolling and one using an invariant approach. Which one to use is a choice made by an SE <em>strategy</em>.</p>
+<p>A <em>big-step SE transition relation</em> <span class="math notranslate nohighlight">\(\delta^\ast\)</span> is the transitive closure of a transition relation <span class="math notranslate nohighlight">\(\delta\)</span>. In our symbolic interpreter, the <code class="docutils literal notranslate"><span class="pre">execute_...</span></code> methods for the “atomic” statement types like assignment, <code class="docutils literal notranslate"><span class="pre">if</span></code>, etc., implement a transition relation; the methods <code class="docutils literal notranslate"><span class="pre">execute_stmts</span></code> and <code class="docutils literal notranslate"><span class="pre">execute_block</span></code> realize the transitive closure.</p>
+<p>Based on the previous formalizations, we can define two aspects of the correctness of symbolic transitions. Modulo some details, the literature addressing the semantics of SE <span id="id2">[<a class="reference internal" href="foundations.html#id286"><span>Kne91</span></a>]</span> <span id="id3">[<a class="reference internal" href="foundations.html#id121"><span>LRA17</span></a>]</span> <span id="id4">[<a class="reference internal" href="foundations.html#id29"><span>dBB19</span></a>]</span> <span id="id5">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span> agrees that two aspects of SE relations are relevant: First, SE relations can be <em>underapproximating</em> because they prune the search space; and second, they can be <em>overapproximating</em> because they use coarse abstractions, e.g., for loop and function summaries. In an underapproximation setting, all concrete transitions resulting from concretizing the symbolic ones are <em>feasible</em>, which means, e.g., that any bug discovered by symbolic execution corresponds to a real bug that can be triggered by an input. We call this property <em>precision</em>. When overapproximating, it is possible that discovered bugs are not feasible. However, one cane be sure that <em>if</em> there is a feasible bug, it will be discovered. We call this property of SE relations <em>exhaustiveness</em>. An SE relation cannot be exhaustive <em>and</em> precise <em>in general</em>; however, the execution of programs without loops or recursive calls generally satisfies both property. Furthermore, summarizing loops or methods with the <em>strongest possible summary</em> leads to a precise and exhaustive execution. Notwithstanding, finding such a summary can be arbitrarily difficult.</p>
+<p>We formally define exhaustive and precise SE transition relations, again following <span id="id6">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>.</p>
+<p><strong>Definition</strong> (Exhaustive SE Transition Relations). An SE transition relation <span class="math notranslate nohighlight">\(\delta\subseteq{}2^{\mathit{SEStates}}\times(2^{\mathit{SEStates}}\times2^{\mathit{SEStates}})\)</span> is called <em>exhaustive</em> if, and only if, for each transition <span class="math notranslate nohighlight">\((I, O)\)</span> in the range of <span class="math notranslate nohighlight">\(\delta\)</span>, <span class="math notranslate nohighlight">\(i\in{}I\)</span> and concrete states <span class="math notranslate nohighlight">\(\sigma,\sigma'\in\mathit{ConcrStates}\)</span>, it holds that <span class="math notranslate nohighlight">\(\sigma'\in\mathit{concr}(i,\sigma)\)</span> implies that there is a symbolic state <span class="math notranslate nohighlight">\(o\in{}O\)</span> such that <span class="math notranslate nohighlight">\(\sigma'\in\mathit{concr}(o,\sigma)\)</span>.<a class="footnote-reference brackets" href="#same-init-state" id="id7">1</a></p>
+<p><strong>Definition</strong> (Precise SE Transition Relations). An SE transition relation <span class="math notranslate nohighlight">\(\delta\subseteq{}2^{\mathit{SEStates}}\times(2^{\mathit{SEStates}}\times2^{\mathit{SEStates}})\)</span> is called <em>precise</em> if, and only if, for each transition <span class="math notranslate nohighlight">\((I, O)\)</span> in the range of <span class="math notranslate nohighlight">\(\delta\)</span>, <span class="math notranslate nohighlight">\(o\in{}O\)</span> and concrete states <span class="math notranslate nohighlight">\(\sigma,\sigma'\in\mathit{ConcrStates}\)</span>, it holds that <span class="math notranslate nohighlight">\(\sigma'\in\mathit{concr}(o,\sigma)\)</span> implies that there is a symbolic state <span class="math notranslate nohighlight">\(i\in{}I\)</span> such that <span class="math notranslate nohighlight">\(\sigma'\in\mathit{concr}(i,\sigma)\)</span>.</p>
+<p>Lemma 3.1 from <span id="id8">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span> asserts that the exhaustiveness / precision of a big-step SE transition relation follows from the exhaustiveness / precision of the underlying single-top transition relation.</p>
+<p>Whether we can use an SE system for a specific application scenario, most prominently testing vs. program proving, depends on whether it satisfies the right correctness property. In either case, we want to check whether a program satisfies some property or assertion <span class="math notranslate nohighlight">\(\varphi\)</span>. Before explaining how the respective properties relate to these application scenarios, we formalize what it means for a symbolic state to satisfy a property. Intuitively, a symbolic state satisfies a property if it holds in all concretizations.</p>
+<p><strong>Definition</strong> (Evaluation of Properties in SESs). Let <span class="math notranslate nohighlight">\(s=(\mathit{Constraint},\mathit{Store},\mathit{PC})\)</span> be a symbolic state and <span class="math notranslate nohighlight">\(\varphi\)</span> be an assertion (some formula over program variables in <span class="math notranslate nohighlight">\(\mathit{PC}\)</span>). Then, <span class="math notranslate nohighlight">\(\varphi\)</span> does hold in <span class="math notranslate nohighlight">\(s\)</span> if, and only if, <span class="math notranslate nohighlight">\(\sigma'\in\mathit{concr}(s,\sigma)\)</span> implies that <span class="math notranslate nohighlight">\(\varphi\)</span> holds in <span class="math notranslate nohighlight">\(\sigma'\)</span>, for all <span class="math notranslate nohighlight">\(\sigma,\sigma'\in\mathit{ConcrStates}\)</span>.</p>
+<p>Practically, this definition is useful to check if a formula is violated. Since it is infeasible to examine all concretizations, it is less useful for <em>proving</em> that a symbolic state satisfies a property.</p>
+<p>Consider the following program which is supposed to invert negative numbers:</p>
+<div class="cell tag_minipy docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The condition of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement contains an off-by-one error: It should be <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> and not <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>. We write a function for applying stores to properties, which we need to use the above definition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">semantics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">symbolic_interpreter</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">apply_store</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">formula</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">subst</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="p">{</span><span class="n">var</span><span class="o">.</span><span class="n">to_z3</span><span class="p">():</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We test the property <span class="math notranslate nohighlight">\(x\geq{}0\)</span> for a symbolic state with empty store and path condition and the above program as program counter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()}))</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">if x &gt; 1:</span>
+<span class="s2">    pass</span>
+<span class="s2">else:</span>
+<span class="s2">    x = -x</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">x_is_positive</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">Store</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)})</span>
+    <span class="n">sigma_prime</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">satisfies</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">apply_store</span><span class="p">(</span><span class="n">sigma_prime</span><span class="p">,</span> <span class="n">x_is_positive</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">satisfies</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Postcondition </span><span class="si">{</span><span class="n">x_is_positive</span><span class="si">}</span><span class="s2"> not satisfied for input x == </span><span class="si">{</span><span class="n">sigma</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Postcondition 0 &lt;= x not satisfied for input x == 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code above only finds the bug so quickly since we restricted the range for random inputs to the interval <span class="math notranslate nohighlight">\([-10;10]\)</span>. For the still relatively small interval <span class="math notranslate nohighlight">\([-100;100]\)</span>, the probability of hitting 1 is already only <span class="math notranslate nohighlight">\(201^{-1}\approx{}0.5\%\)</span>. For symbolic states with empty program counter <span class="math notranslate nohighlight">\(\mathit{PC}\)</span>, however, we do <em>not</em> have to check all concretizations, and instead create a symbolic assertion that we can pass to z3. The idea is to evaluate the formula <span class="math notranslate nohighlight">\(\mathit{Constraint}\rightarrow\{\mathit{Store}\}\varphi\)</span>, where <span class="math notranslate nohighlight">\(\mathit{Store}\}\varphi\)</span> (the application of <span class="math notranslate nohighlight">\(\mathit{Store}\)</span> to <span class="math notranslate nohighlight">\(\varphi\)</span>) is the formula resulting from replacing all occurrences of left-hand side from <span class="math notranslate nohighlight">\(\mathit{Store}\)</span> in <span class="math notranslate nohighlight">\(\varphi\)</span> by their right-hand sides in <span class="math notranslate nohighlight">\(\mathit{Store}\)</span>.</p>
+<p>Let us consider the symbolic state arising from the the execution of the inversion in the <code class="docutils literal notranslate"><span class="pre">else</span></code> branch of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">()</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">pc</span><span class="p">),</span> <span class="n">state</span><span class="p">)</span>
+<span class="n">leaf</span> <span class="o">=</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">tree</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/correctness_9_0.svg" src="_images/correctness_9_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proof_goal</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Implies</span><span class="p">(</span><span class="n">z3_and</span><span class="p">(</span><span class="o">*</span><span class="n">leaf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">path_constraints</span><span class="p">),</span>
+                       <span class="n">state</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">x_is_positive</span><span class="p">))</span>
+<span class="n">proof_goal</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">x &le; 1 &rArr; 0 &le; x</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z3</span><span class="o">.</span><span class="n">prove</span><span class="p">(</span><span class="n">proof_goal</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>counterexample
+[x = -1]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This indicates how symbolic execution is used in program proving: We execute the full program until we get a set of leaves with empty program counters, and then follow the procedure we just have demonstrated to prove that the desired property holds in those leaves.</p>
+<p>To ensure that this leads to valid proofs, the SE transition relation used to obtain the leaves has to be <em>exhaustive</em>, as asserted by the below lemma from <span id="id9">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>:<a class="footnote-reference brackets" href="#simplified-strongly" id="id10">2</a></p>
+<p><strong>Lemma</strong> (A Property Proven by Exhaustive SE Holds for the Inputs). Let <span class="math notranslate nohighlight">\(\delta\)</span> be an exhaustive SE transition relation and <span class="math notranslate nohighlight">\(\mathit{Cnf}\xrightarrow{(I,O)}_{\delta^\ast}\mathit{Cnf}'\)</span>. If a postcondition <span class="math notranslate nohighlight">\(\varphi\)</span> holds for all states <span class="math notranslate nohighlight">\(o\in\mathit{Cnf}'\)</span>, it follows that <span class="math notranslate nohighlight">\(\varphi\)</span> also holds for all <span class="math notranslate nohighlight">\(i\in\mathit{Cnf}\)</span>.</p>
+<p>Intuitively, an exhaustive transition relation does not lose information (in the sense of represented concretizations) along the way, which means that everything we can prove for its outputs must hold for the inputs. Conversely, a violation discovered for an output cannot necessarily be transferred to an input: Discovered bugs might be infeasible for exhaustive SE systems. If feasibility of discovered bugs is a desired goal, symbolic transitions must be <em>precise</em>, i.e., not increase the set of represented concretizations during execution.</p>
+<p><strong>Lemma</strong> (A Bug Discovered by Precise SE is Feasible). Let <span class="math notranslate nohighlight">\(\delta\)</span> be an precise SE transition relation and <span class="math notranslate nohighlight">\(\mathit{Cnf}\xrightarrow{(I,O)}_{\delta^\ast}\mathit{Cnf}'\)</span>. If a postcondition <span class="math notranslate nohighlight">\(\varphi\)</span> is not true for some state <span class="math notranslate nohighlight">\(o\in\mathit{Cnf}'\)</span>, it follows that there is an input <span class="math notranslate nohighlight">\(i\in\mathit{Cnf}\)</span> such that <span class="math notranslate nohighlight">\(\varphi\)</span> does not hold in <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Consequently, symbolic execution must be <em>precise</em> if we use if, e.g., in automated testing (fuzzing), and <em>exhaustive</em> if we use if for program proving.</p>
+<p>Interestingly, the two notions of precision and exhaustiveness can be used as oracles to test the symbolic interpreter! This is, in fact, a new contribution, as we do not know of any existing work on automated testing of symbolic execution engines. To test the interpreter for exhaustiveness, for example, we take an empty symbolic and a random initial concrete state as well as a test program (the program counter), and check that some symbolic output has the same concretization. The precision check is symmetric: We assert that all concretizations for all outputs already exist in the input. Theoretically, we could create not only concrete initial states, but also test programs randomly. However, automatically generating meaningful programs is hard, which is why we use hand-crafted inputs here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">concr</span><span class="p">(</span><span class="n">ses</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+          <span class="n">pc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ASTNode</span><span class="p">]],</span>
+          <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Store</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]]:</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">pc</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+
+    <span class="n">sigma_1</span> <span class="o">=</span> <span class="n">ses</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sigma_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">pc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sigma_1</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">interpreter</span> <span class="o">=</span> <span class="n">Interpreter</span><span class="p">()</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">sigma_1</span><span class="p">)</span>
+
+    <span class="n">exc</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="n">e</span>
+
+    <span class="n">sigma_2</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">store</span>
+
+    <span class="k">return</span> <span class="n">sigma_2</span><span class="p">,</span> <span class="n">exc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_exhaustiveness</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                         <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                         <span class="n">input_state</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+                         <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">concr_result_1</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span><span class="n">input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">concr_result_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">sigma_prime</span><span class="p">,</span> <span class="n">maybe_exc</span> <span class="o">=</span> <span class="n">concr_result_1</span>
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">))]</span>
+
+    <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">:</span>
+        <span class="n">concr_result_2</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">concr_result_2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">sigma_prime_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">concr_result_2</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">sigma_prime_prime</span> <span class="o">==</span> <span class="n">sigma_prime</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="n">maybe_exc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                 <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">maybe_exc</span><span class="p">)</span> <span class="o">==</span>
+                 <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">output_state</span><span class="o">.</span><span class="n">abrupt_completion</span><span class="p">))):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_precision</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                    <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                    <span class="n">input_state</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+                    <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">))]</span>
+
+    <span class="n">concr_results_1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">output_state</span><span class="p">,</span> <span class="n">concr_result_1</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">output_state</span><span class="p">,</span> <span class="n">concr_result_1</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">output_state</span><span class="p">,</span> <span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">))</span>
+                                                            <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">]</span>
+                       <span class="k">if</span> <span class="n">concr_result_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">concr_result_2</span> <span class="o">=</span> <span class="n">concr</span><span class="p">(</span><span class="n">input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">concr_results_1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">concr_result_2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">output_state</span><span class="p">,</span> <span class="n">concr_result_1</span> <span class="ow">in</span> <span class="n">concr_results_1</span><span class="p">:</span>
+        <span class="n">sigma_prime</span><span class="p">,</span> <span class="n">maybe_exc</span> <span class="o">=</span> <span class="n">concr_result_1</span>
+        <span class="n">sigma_prime_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">concr_result_2</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">sigma_prime_prime</span> <span class="o">!=</span> <span class="n">sigma_prime</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">maybe_exc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
+                 <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">maybe_exc</span><span class="p">)</span> <span class="o">!=</span>
+                 <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">output_state</span><span class="o">.</span><span class="n">abrupt_completion</span><span class="p">))):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We specialized these checks to transitions with one input and multiple outputs, and also check for equal exceptions if an exception has been raised. Since we implement an automated testing procedure, we can only show the presence of bugs or that a transition is correct with some probability if no problem could be found. The functions <code class="docutils literal notranslate"><span class="pre">is_probably_exhaustive</span></code> and <code class="docutils literal notranslate"><span class="pre">is_probably_precise</span></code> return <code class="docutils literal notranslate"><span class="pre">None</span></code> if not problem with exhaustiveness / precision has been found, and otherwise a concrete store as <em>counterexample</em> for an initial assignment for a run where symbolic execution is not exhaustive or not precise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_probably_exhaustive</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                           <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
+                           <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                           <span class="n">num_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                           <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">is_probably_correct</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">num_runs</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_probably_precise</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                        <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
+                        <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                        <span class="n">num_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                        <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">is_probably_correct</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">num_runs</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_probably_correct</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                        <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
+                        <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                        <span class="n">exhaustiveness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">num_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                        <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="n">symb_env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="n">SymbolicValueType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+    <span class="p">}</span>
+        
+    <span class="n">input_state</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">(</span><span class="n">symb_env</span><span class="p">))</span>
+        
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_runs</span><span class="p">):</span>
+        <span class="n">concr_env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">variable</span><span class="p">:</span> <span class="n">random_val</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+        <span class="p">}</span>
+
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">concr_env</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">check_exhaustiveness</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">if</span> <span class="n">exhaustiveness</span>
+                  <span class="k">else</span> <span class="n">check_precision</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">,</span> <span class="n">sigma</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Check for initial state </span><span class="si">{</span><span class="n">concr_env</span><span class="si">}</span><span class="s2">: COUNTEREXAMPLE&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigma</span>
+        
+        
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Check for initial state </span><span class="si">{</span><span class="n">concr_env</span><span class="si">}</span><span class="s2">: No problem discovered&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">random_val</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">INT_TYPE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="n">BOOL_TYPE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> 
+                      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can, for example, check wether the implementation of symbolic execution of <code class="docutils literal notranslate"><span class="pre">if</span></code> statements in <code class="docutils literal notranslate"><span class="pre">SymbolicInterpreter</span></code> is precise and exhaustive. As a test program, we choose an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement where the then and else branch each contain a single assignment. We choose relatively expressions for the <code class="docutils literal notranslate"><span class="pre">if</span></code> guard and assignment right-hand sides which can raise different types of exceptions.<a class="footnote-reference brackets" href="#exc-if-found" id="id11">3</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">if_program</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">if a &gt;= t[a] and g:</span>
+<span class="s2">    x = a // c</span>
+<span class="s2">else:</span>
+<span class="s2">    x = c // b</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">),</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">),</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">),</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">BOOL_TYPE</span><span class="p">),</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">TUPLE_TYPE</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">ast_node</span> <span class="o">=</span> <span class="n">parse_on</span><span class="p">(</span><span class="n">if_program</span><span class="p">,</span> <span class="s2">&quot;&lt;if_stmt&gt;&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">is_probably_exhaustive</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">(),</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of if statements is probably exhaustive.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of if statements is not exhaustive. Counterexample: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">is_probably_precise</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">(),</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of if statements is probably precise.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of if statements is not precise. Counterexample: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is probably exhaustive.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is probably precise.
+</pre></div>
+</div>
+</div>
+</div>
+<p>To test the symbolic execution of <code class="docutils literal notranslate"><span class="pre">while</span></code> statements, we choose a relatively simple, but unbounded loop (i.e., the evaluation of the loop guard depends on a symbolic value), and initialize the symbolic interpreter such that loops are unrolled at most two times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">while_program</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">while idx &gt;= x:</span>
+<span class="s2">    idx = idx - 1</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">),</span>
+    <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">(</span><span class="n">loop_unrolling_threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ast_node</span> <span class="o">=</span> <span class="n">parse_on</span><span class="p">(</span><span class="n">while_program</span><span class="p">,</span> <span class="s2">&quot;&lt;while_stmt&gt;&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">is_probably_exhaustive</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of while statements is probably exhaustive.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of while statements is not exhaustive. Counterexample: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">is_probably_precise</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of while statements is probably precise.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of while statements is not precise. Counterexample: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Check for initial state {Variable(&#39;x&#39;, Type(&#39;int&#39;)): 44, Variable(&#39;idx&#39;, Type(&#39;int&#39;)): -29}: No problem discovered
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Check for initial state {Variable(&#39;x&#39;, Type(&#39;int&#39;)): -72, Variable(&#39;idx&#39;, Type(&#39;int&#39;)): -55}: COUNTEREXAMPLE
+Execution of while statements is not exhaustive. Counterexample: {x: -72, idx: -55}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of while statements is not precise. Counterexample: {x: 60, idx: 61}
+</pre></div>
+</div>
+</div>
+</div>
+<p>It turns out the loop unrolling is not exhaustive. This could be expected, since we prune the search space, which leads to a loss of represented concrete states; but now, we have an automatically discovered counterexample!</p>
+<p>In contrast to static analysis techniques like the well-known <em>Abstract Interpretation</em> <span id="id12">[<a class="reference internal" href="#id218"><span>CC77</span></a>]</span>, which reasons in an abstract domain throughout the analysis, symbolic execution is in its nature a <em>precise analysis technique</em>. This is reflected by the relatively low effort required to come up with a precise, terminating symbolic interpreter. To render SE <em>exhaustive</em>, extra effort needs to be invested (see <a class="reference internal" href="static_loops.html#techniques-loops-static-se"><span class="std std-ref">Loops in Static Symbolic Execution</span></a>).</p>
+<p>In subsequent parts of this book, we focus on individual symbolic execution <em>techniques</em>, both for exhaustive and precise SE.</p>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id13"><dl class="citation">
+<dt class="label" id="id218"><span class="brackets"><a class="fn-backref" href="#id12">CC77</a></span></dt>
+<dd><p>Patrick Cousot and Radhia Cousot. Abstract Interpretation: A Unified Lattice Model for Static Analysis of Programs by Construction or Approximation of Fixpoints. In <em>4th Symp. of POPL</em>, 238–252. ACM Press, January 1977.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets"><a class="fn-backref" href="#id4">dBB19</a></span></dt>
+<dd><p>Frank S. de Boer and Marcello M. Bonsangue. On the Nature of Symbolic Execution. In <em>Proc. 3rd World Congress on Formal Methods (FM)</em>, 64–80. 2019. <a class="reference external" href="https://doi.org/10.1007/978-3-030-30942-8\_6">doi:10.1007/978-3-030-30942-8\_6</a>.</p>
+</dd>
+<dt class="label" id="id277"><span class="brackets"><a class="fn-backref" href="#id2">Kne91</a></span></dt>
+<dd><p>Ralf Kneuper. Symbolic Execution: A Semantic Approach. <em>Sci. Comput. Program.</em>, 16(3):207–249, 1991. <a class="reference external" href="https://doi.org/10.1016/0167-6423(91)90008-L">doi:10.1016/0167-6423(91)90008-L</a>.</p>
+</dd>
+<dt class="label" id="id112"><span class="brackets"><a class="fn-backref" href="#id3">LRA17</a></span></dt>
+<dd><p>Dorel Lucanu, Vlad Rusu, and Andrei Arusoaie. A Generic Framework for Symbolic Execution: A Coinductive Approach. <em>J. Symb. Comput.</em>, 80:125–163, 2017. <a class="reference external" href="https://doi.org/10.1016/j.jsc.2016.07.012">doi:10.1016/j.jsc.2016.07.012</a>.</p>
+</dd>
+<dt class="label" id="id75"><span class="brackets">Steinhofel20</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id5">2</a>,<a href="#id6">3</a>,<a href="#id8">4</a>,<a href="#id9">5</a>,<a href="#id340">6</a>,<a href="#id341">7</a>)</span></dt>
+<dd><p>Dominic Steinhöfel. <em>Abstract Execution: Automatically Proving Infinitely Many Programs</em>. PhD thesis, TU Darmstadt, Dept. of Computer Science, Darmstadt, Germany, 2020. URL: <a class="reference external" href="http://tuprints.ulb.tu-darmstadt.de/8540/">http://tuprints.ulb.tu-darmstadt.de/8540/</a>, <a class="reference external" href="https://doi.org/10.25534/tuprints-00008540">doi:10.25534/tuprints-00008540</a>.</p>
+</dd>
+</dl>
+</p>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="same-init-state"><span class="brackets"><a class="fn-backref" href="#id7">1</a></span></dt>
+<dd><p>We expressed a slightly stricter definition of exhaustiveness than the one given in <span id="id340">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>. In the original definition, the concrete state <span class="math notranslate nohighlight">\(\sigma'\)</span> may be obtained from concretizing <span class="math notranslate nohighlight">\(o\)</span> based on a <em>different</em> initial state <span class="math notranslate nohighlight">\(\sigma''\)</span>, which allows consistently renaming variables in right-hand sides. Such a behavior is, however, quite unusual in symbolic execution, which is why we chose to simplify the definition. The same holds for the definition of precision.</p>
+</dd>
+<dt class="label" id="simplified-strongly"><span class="brackets"><a class="fn-backref" href="#id10">2</a></span></dt>
+<dd><p>In <span id="id341">[<a class="reference internal" href="static_loops.html#id71"><span>Steinhofel20</span></a>]</span>, the definition is a little more involved, since it takes into account uninterpreted logic constants and functions occurring in assertions, for which a strong version of precision and exhaustiveness is required. We only consider assertions over program variables and interpreted functions (such as addition), and possibly quantified formulas with bound logic variables, which permits to simplify the definition.</p>
+</dd>
+<dt class="label" id="exc-if-found"><span class="brackets"><a class="fn-backref" href="#id11">3</a></span></dt>
+<dd><p>We actually found a bug in our symbolic interpreter by testing it using the described methodology. In Python, negative array indices are admissible: <code class="docutils literal notranslate"><span class="pre">t[-i]</span></code>, for positive <code class="docutils literal notranslate"><span class="pre">i</span></code>, is equivalent to <code class="docutils literal notranslate"><span class="pre">t[len(t)-i</span></code>. The symbolic interpreter, however, reported an <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> in a previous version (which is the behavior of <code class="docutils literal notranslate"><span class="pre">Java</span></code>, for instance). By reducing the reported initial state, we quickly discovered the problem. We also discovered a more subtle bug related to Python’s semantics: Integer division in Python is a floor division, such that <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">//</span> <span class="pre">-2</span></code> yields <code class="docutils literal notranslate"><span class="pre">-1</span></code>, while z3 computes <code class="docutils literal notranslate"><span class="pre">0</span></code>. We had to model the Python behavior by replacing <code class="docutils literal notranslate"><span class="pre">left_val</span> <span class="pre">/</span> <span class="pre">right_val</span></code> by <code class="docutils literal notranslate"><span class="pre">z3.ToInt(z3.ToReal(left_val)</span> <span class="pre">/</span> <span class="pre">z3.ToReal(right_val))</span></code> in the <code class="docutils literal notranslate"><span class="pre">handle_binary_operation</span></code> method.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="symbolic_interpreter.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">A Symbolic Interpreter and Correctness of Symbolic Transitions</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="techniques.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Techniques</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Dominic Steinhöfel<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
