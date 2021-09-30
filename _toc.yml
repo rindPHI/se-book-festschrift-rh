@@ -5,6 +5,7 @@
 - file: minipy
 - file: foundations
   sections:
+    - file: constraint_solving
     - file: semantics
     - file: symbolic_interpreter
     - file: correctness
