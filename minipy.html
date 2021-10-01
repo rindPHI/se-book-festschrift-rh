@@ -636,7 +636,7 @@ return x # Now we return
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
-  File &quot;/tmp/ipykernel_331/3620741631.py&quot;, line 2, in &lt;module&gt;
+  File &quot;/tmp/ipykernel_1227/3620741631.py&quot;, line 2, in &lt;module&gt;
     tree = parser.parse(example_program)[0]
   File &quot;/opt/conda/lib/python3.9/site-packages/fuzzingbook/Parser.py&quot;, line 503, in parse
     raise SyntaxError(&quot;at &quot; + repr(text[cursor:]))
@@ -1929,9 +1929,9 @@ LHS of assignment: x
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
-  File &quot;/tmp/ipykernel_331/3540991285.py&quot;, line 2, in &lt;module&gt;
+  File &quot;/tmp/ipykernel_1227/3540991285.py&quot;, line 2, in &lt;module&gt;
     store[&quot;a&quot;]
-  File &quot;/tmp/ipykernel_331/3609531971.py&quot;, line 28, in __getitem__
+  File &quot;/tmp/ipykernel_1227/3609531971.py&quot;, line 28, in __getitem__
     raise AttributeError(f&quot;Attempt to read uninitialized variable {item}&quot;)
 AttributeError: Attempt to read uninitialized variable a (expected)
 </pre></div>
@@ -1960,9 +1960,9 @@ AttributeError: Attempt to read uninitialized variable a (expected)
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
-  File &quot;/tmp/ipykernel_331/3534397449.py&quot;, line 2, in &lt;module&gt;
+  File &quot;/tmp/ipykernel_1227/3534397449.py&quot;, line 2, in &lt;module&gt;
     store[Variable(&quot;x&quot;, BOOL_TYPE)] = False
-  File &quot;/tmp/ipykernel_331/3609531971.py&quot;, line 36, in __setitem__
+  File &quot;/tmp/ipykernel_1227/3609531971.py&quot;, line 36, in __setitem__
     raise RuntimeError(f&quot;Incompatible assignment types for variable {key.name}: &quot;
 RuntimeError: Incompatible assignment types for variable x: bool, previously: int (expected)
 </pre></div>
@@ -2395,13 +2395,13 @@ RuntimeError: Incompatible assignment types for variable x: bool, previously: in
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
-  File &quot;/tmp/ipykernel_331/1620470182.py&quot;, line 2, in &lt;module&gt;
+  File &quot;/tmp/ipykernel_1227/1620470182.py&quot;, line 2, in &lt;module&gt;
     interpreter.evaluate(parse_expr(&quot;1 // 0&quot;), environment)
-  File &quot;/tmp/ipykernel_331/741837800.py&quot;, line 149, in evaluate
+  File &quot;/tmp/ipykernel_1227/741837800.py&quot;, line 149, in evaluate
     return self.expr_interpretations[t](expr, environment)
-  File &quot;/tmp/ipykernel_331/741837800.py&quot;, line 201, in evaluate_term
+  File &quot;/tmp/ipykernel_1227/741837800.py&quot;, line 201, in evaluate_term
     return operator_map[expr.op](left, right)
-  File &quot;/tmp/ipykernel_331/741837800.py&quot;, line 194, in &lt;lambda&gt;
+  File &quot;/tmp/ipykernel_1227/741837800.py&quot;, line 194, in &lt;lambda&gt;
     &quot;//&quot;: lambda a, b: a // b,
 ZeroDivisionError: integer division or modulo by zero (expected)
 </pre></div>
