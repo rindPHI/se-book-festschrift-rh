@@ -933,9 +933,12 @@
     <span class="c1"># ...</span>
 </pre></div>
 </div>
-<p>In the case of an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, we have one leaf for each raised exception when evaluating the guard, plus one leaf each for the execution of the then and else branch of the conditional. To avoid creating infeasible subtrees, we add an unsatisfiability check for each case.</p>
+<p>In the case of an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, we have one leaf for each raised exception when evaluating the guard, plus one leaf each for the execution of the then and else branch of the conditional. To avoid creating infeasible subtrees, we add an unsatisfiability check for each case. To that end, we add a method <code class="docutils literal notranslate"><span class="pre">unsatisfiable</span></code> to <code class="docutils literal notranslate"><span class="pre">SymbolicInterpreter</span></code>, which, as of now, only works as a proxy to <code class="docutils literal notranslate"><span class="pre">SymbolicEnvironment.unsatisfiable()</span></code>. Yet, it will greatly simplify adapting the symbolic to a concrete interpreter in <a class="reference internal" href="concolic.html#techniques-concolic-execution"><span class="std std-ref">Concolic Execution</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicInterpreter</span><span class="p">:</span>
     <span class="c1"># ...</span>
+    
+    <span class="k">def</span> <span class="nf">unsatisfiable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">execute_if_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">IfStmt</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
         <span class="n">eval_expr_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">guard</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
@@ -945,7 +948,7 @@
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
             <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">new_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
@@ -960,12 +963,10 @@
             <span class="n">then_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
             <span class="n">else_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
 
-            <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="n">then_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="n">else_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">then_env_unsat</span><span class="p">:</span>
-                <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">else_env_unsat</span><span class="p">:</span>
-                <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">then_env</span><span class="p">)</span>
+            <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">else_env</span><span class="p">)</span>
+            
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">then_env_unsat</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">else_env_unsat</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">then_env_unsat</span><span class="p">:</span>
                 <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">then_block</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
@@ -1035,7 +1036,7 @@
     <span class="c1"># ...</span>
 </pre></div>
 </div>
-<p>The concrete interpreter evaluates the guard, executes the body if the guard evaluates to true, checks for the special <code class="docutils literal notranslate"><span class="pre">Continue</span></code> and <code class="docutils literal notranslate"><span class="pre">Break</span></code> exceptions, and continues doing this until the guard evaluates to false (or a <code class="docutils literal notranslate"><span class="pre">Continue</span></code> or <code class="docutils literal notranslate"><span class="pre">Break</span></code> was encountered). The simplest way of symbolically executing a loop is to mimic this behavior, which is called <em>loop unrolling</em> in SE terminology <span id="id3">[<a class="reference internal" href="transparent_function_execution.html#id173"><span>ABB+16</span></a>]</span> <span id="id4">[<a class="reference internal" href="#id155"><span>BCCDElia+18</span></a>]</span>. Implementing this is not too difficult:</p>
+<p>The concrete interpreter evaluates the guard, executes the body if the guard evaluates to true, checks for the special <code class="docutils literal notranslate"><span class="pre">Continue</span></code> and <code class="docutils literal notranslate"><span class="pre">Break</span></code> exceptions, and continues doing this until the guard evaluates to false (or a <code class="docutils literal notranslate"><span class="pre">Continue</span></code> or <code class="docutils literal notranslate"><span class="pre">Break</span></code> was encountered). The simplest way of symbolically executing a loop is to mimic this behavior, which is called <em>loop unrolling</em> in SE terminology <span id="id3">[<a class="reference internal" href="#id177"><span>ABB+16</span></a>]</span> <span id="id4">[<a class="reference internal" href="#id155"><span>BCCDElia+18</span></a>]</span>. Implementing this is not too difficult:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicInterpreter</span><span class="p">:</span>
     <span class="c1"># ...</span>
     
@@ -1044,16 +1045,19 @@
         <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[])</span>
 
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_guard_res</span><span class="p">:</span>
+            <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
+                <span class="k">continue</span>
+            
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
-                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exc_node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
-                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">new_env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
                 <span class="k">continue</span>
 
             <span class="n">then_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">then_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
+            <span class="n">then_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">then_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">then_env</span><span class="p">):</span>
                 <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">subtree</span><span class="p">):</span>
@@ -1076,9 +1080,9 @@
                     <span class="k">continue</span>
 
             <span class="n">else_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="n">else_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
+            <span class="n">else_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">else_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">else_env</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span><span class="p">,</span> <span class="n">else_env</span><span class="p">)</span>
                     <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;else:&#39;</span><span class="p">),</span> <span class="p">[</span><span class="n">subtree</span><span class="p">]))</span>
@@ -1309,6 +1313,9 @@
             <span class="n">NameAtom</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="p">,</span>
         <span class="p">}</span>
 
+    <span class="k">def</span> <span class="nf">unsatisfiable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Executing statement </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
 
@@ -1341,7 +1348,7 @@
 
             <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">leaves</span><span class="p">:</span>
                 <span class="n">node</span><span class="p">,</span> <span class="n">children</span> <span class="o">=</span> <span class="n">leaf</span>
-                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">abrupt_completion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">abrupt_completion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
 
@@ -1387,7 +1394,7 @@
 
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
             <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">new_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
@@ -1399,12 +1406,10 @@
             <span class="n">sat_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">viol_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
-            <span class="n">sat_env_unsat</span> <span class="o">=</span> <span class="n">sat_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="n">viol_env_unsat</span> <span class="o">=</span> <span class="n">viol_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">sat_env_unsat</span><span class="p">:</span>
-                <span class="n">viol_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">viol_env_unsat</span><span class="p">:</span>
-                <span class="n">sat_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">sat_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">sat_env</span><span class="p">)</span>
+            <span class="n">viol_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">viol_env</span><span class="p">)</span>
+            
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">sat_env_unsat</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">viol_env_unsat</span>
 
             <span class="k">if</span> <span class="n">sat_env_unsat</span><span class="p">:</span>
                 <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">()),</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">[]))</span>
@@ -1420,7 +1425,7 @@
         <span class="n">eval_expr_result</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">constraint</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">expression</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">))</span>
         <span class="p">]</span>
 
         <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SET</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1500,8 +1505,7 @@
 
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_expr_result</span><span class="p">:</span>
             <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">new_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
@@ -1516,12 +1520,8 @@
             <span class="n">then_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
             <span class="n">else_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
 
-            <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="n">then_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="n">else_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">then_env_unsat</span><span class="p">:</span>
-                <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">else_env_unsat</span><span class="p">:</span>
-                <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">then_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">then_env</span><span class="p">)</span>
+            <span class="n">else_env_unsat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">else_env</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">then_env_unsat</span><span class="p">:</span>
                 <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">then_block</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
@@ -1541,16 +1541,19 @@
         <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[])</span>
 
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_guard_res</span><span class="p">:</span>
+            <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
+                <span class="k">continue</span>
+            
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
-                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exc_node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
-                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">new_env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
                 <span class="k">continue</span>
 
             <span class="n">then_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">then_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
+            <span class="n">then_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">then_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">then_env</span><span class="p">):</span>
                 <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">subtree</span><span class="p">):</span>
@@ -1573,9 +1576,9 @@
                     <span class="k">continue</span>
 
             <span class="n">else_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="n">else_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
+            <span class="n">else_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">else_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">else_env</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span><span class="p">,</span> <span class="n">else_env</span><span class="p">)</span>
                     <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;else:&#39;</span><span class="p">),</span> <span class="p">[</span><span class="n">subtree</span><span class="p">]))</span>
@@ -1916,7 +1919,7 @@
 <li><p>Implement the <code class="docutils literal notranslate"><span class="pre">len</span></code> function in minipy and add it to our program.</p></li>
 <li><p>Summarize the <code class="docutils literal notranslate"><span class="pre">len</span></code> function with a symbolic expression.</p></li>
 </ol>
-<p>Option (2) corresponds to the concept of <em>function summaries</em> or <em>contracts</em> <span id="id5">[<a class="reference internal" href="transparent_function_execution.html#id173"><span>ABB+16</span></a>]</span> <span id="id6">[<a class="reference internal" href="#id155"><span>BCCDElia+18</span></a>]</span>. Such a summary is basically a conjunction of pre- and postcondition pairs, such that if a precondition holds in the current state, the postcondition can be assumed after function execution. We choose this option to teach the symbolic interpreter about the <code class="docutils literal notranslate"><span class="pre">len</span></code> function, since it would be rather impractical to add full implementations of all used library functions to each analyzed program. Furthermore, summaries are a central concept of <em>compositional symbolic execution</em> <span id="id7">[<a class="reference internal" href="#id179"><span>AGT08</span></a>]</span> (see also <a class="reference internal" href="compositional.html#techniques-compositional-se"><span class="std std-ref">Compositional Symbolic Execution</span></a>). It allows to modularly execute one piece of code at a time to derive or prove its summary, while invoking other functions by their summaries instead of executing them repeatedly.</p>
+<p>Option (2) corresponds to the concept of <em>function summaries</em> or <em>contracts</em> <span id="id5">[<a class="reference internal" href="#id177"><span>ABB+16</span></a>]</span> <span id="id6">[<a class="reference internal" href="#id155"><span>BCCDElia+18</span></a>]</span>. Such a summary is basically a conjunction of pre- and postcondition pairs, such that if a precondition holds in the current state, the postcondition can be assumed after function execution. We choose this option to teach the symbolic interpreter about the <code class="docutils literal notranslate"><span class="pre">len</span></code> function, since it would be rather impractical to add full implementations of all used library functions to each analyzed program. Furthermore, summaries are a central concept of <em>compositional symbolic execution</em> <span id="id7">[<a class="reference internal" href="#id179"><span>AGT08</span></a>]</span> (see also <a class="reference internal" href="compositional.html#techniques-compositional-se"><span class="std std-ref">Compositional Symbolic Execution</span></a>). It allows to modularly execute one piece of code at a time to derive or prove its summary, while invoking other functions by their summaries instead of executing them repeatedly.</p>
 <p>We extend the symbolic interpreter such that we can pass it a collection of predicates that will be considered in function calls whenever a function implementation is not available. Technically, we pass the interpreter a dictionary with predicate names as keys, and triples of argument sorts, target sort, and a Callable producing a symbolic value from the given arguments as values. For the <code class="docutils literal notranslate"><span class="pre">len</span></code> function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2053,23 +2056,25 @@
 
     <span class="k">def</span> <span class="nf">execute_while_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">WhileStmt</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
                            <span class="n">loop_unrolling_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SET</span><span class="p">:</span>
-        <span class="n">loop_unrolling_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">loop_unrolling_threshold</span> <span class="ow">is</span> <span class="kc">None</span>
-                                    <span class="k">else</span> <span class="n">loop_unrolling_threshold</span><span class="p">)</span>
+        <span class="n">loop_unrolling_threshold</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">loop_unrolling_threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">loop_unrolling_threshold</span>
 
         <span class="n">eval_guard_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">guard</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">stmt</span><span class="o">.</span><span class="n">code</span><span class="p">),</span> <span class="p">[])</span>
 
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">eval_guard_res</span><span class="p">:</span>
+            <span class="n">new_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">new_env</span><span class="p">):</span>
+                <span class="k">continue</span>
+
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
-                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exc_node</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
-                    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="n">exc_node</span> <span class="o">=</span> <span class="n">SETNode</span><span class="p">(</span><span class="n">new_env</span><span class="o">.</span><span class="n">set_abrupt_completion</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_node</span><span class="p">,</span> <span class="p">[]))</span>
                 <span class="k">continue</span>
 
             <span class="n">then_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">then_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
+            <span class="n">then_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">then_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">then_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">()</span> <span class="ow">and</span> <span class="n">loop_unrolling_threshold</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">then_env</span><span class="p">)</span> <span class="ow">and</span> <span class="n">loop_unrolling_threshold</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">then_env</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subtree</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">subtree</span><span class="p">):</span>
@@ -2092,9 +2097,9 @@
                     <span class="k">continue</span>
 
             <span class="n">else_constraint</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">BoolRef</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="n">else_env</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
+            <span class="n">else_env</span> <span class="o">=</span> <span class="n">new_env</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">else_constraint</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">else_env</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsatisfiable</span><span class="p">(</span><span class="n">else_env</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subtree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">else_block</span><span class="p">,</span> <span class="n">else_env</span><span class="p">)</span>
                     <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">SETNode</span><span class="p">(</span><span class="n">else_env</span><span class="p">,</span> <span class="s1">&#39;else:&#39;</span><span class="p">),</span> <span class="p">[</span><span class="n">subtree</span><span class="p">]))</span>
