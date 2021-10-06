@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automatic Testing of Symbolic Execution Engines Using the Concretization Oracle &#8212; Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/page.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Symbolic Execution: Foundations, Techniques, Applications and Future Perspectives</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="minipy.html">
+   Parser and Interpreter for minipy
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="foundations.html">
+   Foundations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="constraint_solving.html">
+     Constraint Solving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="semantics.html">
+     Syntax and Semantics of Symbolic States
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="symbolic_interpreter.html">
+     A Symbolic Interpreter and Correctness of Symbolic Transitions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="correctness.html">
+     Correctness of Symbolic Transitions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="techniques.html">
+   Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transparent_function_execution.html">
+     Transparent Symbolic Execution of Function Calls
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="static_loops.html">
+     Loops in Static Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="compositional.html">
+     Compositional Symbolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concolic.html">
+     Concolic Execution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stateexplosion.html">
+     Tackling State Explosion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="selective.html">
+     Selective Symbolic Execution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="applications.html">
+   Applications
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proving.html">
+     Program Proving
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fuzzing.html">
+     Symbolic Fuzzing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     Symbolic Debugging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perspectives.html">
+   Future Perspectives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="conclusion.html">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/DEMO-Correctness.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/rindPHI/se-book-festschrift-rh/issues/new?title=Issue%20on%20page%20%2FDEMO-Correctness.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concretizations">
+   Concretizations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#precision">
+   Precision
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exhaustiveness">
+   Exhaustiveness
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="automatic-testing-of-symbolic-execution-engines-using-the-concretization-oracle">
+<h1>Automatic Testing of Symbolic Execution Engines Using the Concretization Oracle<a class="headerlink" href="#automatic-testing-of-symbolic-execution-engines-using-the-concretization-oracle" title="Permalink to this headline">¶</a></h1>
+<p>Consider the following implementation of tuple access <code class="docutils literal notranslate"><span class="pre">t[x]</span></code> in a symbolic interpreter for Python:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicInterpreter</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle_tuple_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tuple_result</span><span class="p">:</span> <span class="n">EvalExprResult</span><span class="p">,</span>
+                        <span class="n">expr_result</span><span class="p">:</span> <span class="n">EvalExprResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvalExprResult</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="n">EvalExprResult</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">atom_value</span><span class="p">,</span> <span class="n">atom_constraint</span> <span class="ow">in</span> <span class="n">tuple_result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom_value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atom_value</span><span class="p">,</span> <span class="n">atom_constraint</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom_value</span><span class="o">.</span><span class="n">sort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSortRef</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">atom_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2"> is not subscriptable&quot;</span><span class="p">),</span>
+                               <span class="n">atom_constraint</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">expr_value</span><span class="p">,</span> <span class="n">expr_constraint</span> <span class="ow">in</span> <span class="n">expr_result</span><span class="p">:</span>
+                <span class="n">conjunction</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">atom_constraint</span><span class="p">,</span> <span class="n">expr_constraint</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr_value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">expr_value</span><span class="p">,</span> <span class="n">conjunction</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">expr_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="o">!=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">():</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;list indices must be integers, not </span><span class="si">{</span><span class="n">expr_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                                   <span class="n">conjunction</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">atom_value</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span>
+
+                <span class="n">length_constraint</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">expr_value</span><span class="p">,</span>
+                                           <span class="n">expr_value</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">atom_value</span><span class="p">))</span>
+
+                <span class="n">expr</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">atom_value</span><span class="p">[</span><span class="n">expr_value</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">decl</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Z3_OP_ITE</span> <span class="ow">and</span> \
+                        <span class="n">implies</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint</span><span class="p">),</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint</span><span class="p">)))</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;tuple index out of range&quot;</span><span class="p">),</span>
+                               <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">length_constraint</span><span class="p">))))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us symbolically execute a simple code snippet with a tuple access.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">TUPLE_TYPE</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">if t[x] &gt; 0:</span>
+<span class="s2">    result = t[x]</span>
+<span class="s2">else:</span>
+<span class="s2">    result = -t[x]</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">display_program</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">()</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()}))</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">),</span> <span class="n">env</span><span class="p">)</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DEMO-Correctness_8_0.svg" src="_images/DEMO-Correctness_8_0.svg" /></div>
+</div>
+<div class="section" id="concretizations">
+<h2>Concretizations<a class="headerlink" href="#concretizations" title="Permalink to this headline">¶</a></h2>
+<p>Our proposed oracle is based on <em>concretizations</em>. The idea is simple: Given a concrete store, the concretization of a symbolic state is either (1) <code class="docutils literal notranslate"><span class="pre">None</span></code> (if the concrete store does not satisfy the path condition) or (2) a concrete store resulting from the interpretation of variable occurrences in values of the symbolic store in the given concrete store (otherwise).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">concr</span><span class="p">(</span><span class="n">ses</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+          <span class="n">pc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ASTNode</span><span class="p">]],</span>
+          <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Store</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]]:</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">pc</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+
+    <span class="n">sigma_1</span> <span class="o">=</span> <span class="n">ses</span><span class="o">.</span><span class="n">concretize</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sigma_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">pc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sigma_1</span><span class="p">,</span> <span class="n">ses</span><span class="o">.</span><span class="n">abrupt_completion</span>
+
+    <span class="n">interpreter</span> <span class="o">=</span> <span class="n">Interpreter</span><span class="p">()</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">sigma_1</span><span class="p">)</span>
+
+    <span class="n">exc</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">environment</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="n">e</span>
+
+    <span class="n">sigma_2</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">store</span>
+
+    <span class="k">return</span> <span class="n">sigma_2</span><span class="p">,</span> <span class="n">exc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We extract the left-most leaf node of the above symbolic execution tree and concretize it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">leaf_ses</span> <span class="o">=</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">tree</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">leaf_ses</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DEMO-Correctness_12_0.svg" src="_images/DEMO-Correctness_12_0.svg" /></div>
+</div>
+<p>We start with a node assigning <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">-42)</span></code> to <code class="docutils literal notranslate"><span class="pre">t</span></code>, which satisfies the path condition <span class="math notranslate nohighlight">\(0\leq x,\ \neg(\mathrm{len}(t)\leq x),\ \neg(t[x]\leq0)\)</span>. In that case, the final value of <code class="docutils literal notranslate"><span class="pre">result</span></code> will be <code class="docutils literal notranslate"><span class="pre">t[x]</span></code> in that symbolic state, i.e., 2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concr</span><span class="p">(</span><span class="n">leaf_ses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">Store</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">)}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Store({Variable(&#39;x&#39;, Type(&#39;int&#39;)): 0, Variable(&#39;t&#39;, Type(&#39;tuple&#39;)): (2, -42), Variable(&#39;result&#39;, Type(&#39;int&#39;)): 2}),
+ None)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is negative, the path condition is not satisfied:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">concr</span><span class="p">(</span><span class="n">leaf_ses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">Store</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">)})))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="precision">
+<h2>Precision<a class="headerlink" href="#precision" title="Permalink to this headline">¶</a></h2>
+<p>A symbolic interpreter is called <em>precise</em> if all concrete transitions resulting from concretizing the symbolic ones are <em>feasible</em>, which means, e.g., that any bug discovered by symbolic execution corresponds to a real bug that can be triggered by an input. However, some feasible bugs may be missed (underapproximation).</p>
+<p>Given a test program and symbolic and concrete inputs states, we</p>
+<ol class="simple">
+<li><p>Compute the result (output states) of symbolically executing the test program in the symbolic input state.</p></li>
+<li><p>Compute the set of concretizations for the output states, which generally contains <em>at most</em> one element.</p></li>
+<li><p>Compute the concretization of the input symbolic state w.r.t. the test program, i.e., using the <em>concrete</em> reference interpreter.</p></li>
+<li><p>Check that the results from step 2 are contained in the singleton set with the result from step 3, i.e., all computations of the <em>symbolic</em> interpreter can be reproduced by the <em>concrete</em> interpreter.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_precision</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                    <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                    <span class="n">input_state</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+                    <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">))]</span>
+    <span class="n">concr_symbolic</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+
+    <span class="n">concr_concrete</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">concr_symbolic</span><span class="o">.</span><span class="n">subset_of</span><span class="p">(</span><span class="n">concr_concrete</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConcrResultSet</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concr_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Store</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]]]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">concr_results</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Store</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ExceptionWrapper</span><span class="p">]]]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">concr_result</span> <span class="ow">in</span> <span class="n">concr_results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">concr_result</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">store</span><span class="p">,</span> <span class="n">maybe_exc</span> <span class="o">=</span> <span class="n">concr_result</span>
+            <span class="k">if</span> <span class="n">maybe_exc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">maybe_exc</span> <span class="o">=</span> <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">maybe_exc</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">concr_results</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">store</span><span class="p">,</span> <span class="n">maybe_exc</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">subset_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;ConcrResultSet&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">r</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">concr_results</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concr_results</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">concr_results</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concr_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we perform this check repeatedly with different concrete inputs states, we obtain an automated, randomized testing approach for symbolic interpreters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_probably_precise</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                        <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
+                        <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                        <span class="n">num_runs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="n">symbolic_input_state</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+    <span class="p">}))</span>
+
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">symbolic_input_state</span><span class="p">))]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_runs</span><span class="p">):</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">Store</span><span class="p">({</span>
+            <span class="n">variable</span><span class="p">:</span> <span class="n">random_val</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+        <span class="p">})</span>
+
+        <span class="n">concr_symbolic</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+
+        <span class="n">concr_concrete</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">symbolic_input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)])</span>
+
+        <span class="n">precise</span> <span class="o">=</span> <span class="n">concr_symbolic</span><span class="o">.</span><span class="n">subset_of</span><span class="p">(</span><span class="n">concr_concrete</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">precise</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sigma</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">random_val</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">INT_TYPE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="n">BOOL_TYPE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> 
+                      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since we fix the symbolic state to be an assignment of unique, trivial symbolic values to variables, we only need one run of the symbolic interpreter per test program, <em>independently of the number of tested concrete inputs</em>. This saves a lot of time. Alternatively, we could repeatedly call <code class="docutils literal notranslate"><span class="pre">check_precision</span></code>, which is functionally equivalent, but less effective.</p>
+<p>Another possible optimization is to generate sigma by solving / sampling the path constraint of <code class="docutils literal notranslate"><span class="pre">symbolic_input_state</span></code> (which is only relevant if we have a non-trivial path constraint). Then, we avoid concrete states that do not match the path condition of any symbolic output state, which trivially satisfy the precision check.</p>
+<p>We apply this testing procedure to the small program above, primarily to test our implementation of tuple access.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">maybe_counterexample</span> <span class="o">=</span> <span class="n">is_probably_precise</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">(),</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">},</span> <span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_counterexample</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of if statements is probably precise.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of if statements is not precise. Counterexample: </span><span class="si">{</span><span class="n">maybe_counterexample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is not precise. Counterexample: {t: (47, 21, -100, -64, 8, -84), x: -3}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Obviously, there is a problem, and we got a concrete input which triggers it! We can now compare the results of the concrete and symbolic interpreters for this input:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concr_env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">Store</span><span class="p">(</span><span class="n">maybe_counterexample</span><span class="p">))</span>
+<span class="n">Interpreter</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">),</span> <span class="n">concr_env</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+<span class="n">concr_env</span><span class="p">[</span><span class="n">result</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concr_symb_env</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">maybe_counterexample</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">maybe_counterexample</span><span class="p">}</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">(</span><span class="n">concr_symb_env</span><span class="p">))</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">),</span> <span class="n">env</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DEMO-Correctness_27_0.svg" src="_images/DEMO-Correctness_27_0.svg" /></div>
+</div>
+<p>The problem is that in Python, negative tuple indices are allowed (then, one counts from the end of the tuple). We did not consider this in <code class="docutils literal notranslate"><span class="pre">handle_tuple_access</span></code>. We fix this problem by distinguishing two length constraints:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SymbolicInterpreter</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle_tuple_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tuple_result</span><span class="p">:</span> <span class="n">EvalExprResult</span><span class="p">,</span> <span class="n">expr_result</span><span class="p">:</span> <span class="n">EvalExprResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvalExprResult</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="n">EvalExprResult</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">atom_value</span><span class="p">,</span> <span class="n">atom_constraint</span> <span class="ow">in</span> <span class="n">tuple_result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom_value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atom_value</span><span class="p">,</span> <span class="n">atom_constraint</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom_value</span><span class="o">.</span><span class="n">sort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqSortRef</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">atom_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2"> is not subscriptable&quot;</span><span class="p">),</span>
+                               <span class="n">atom_constraint</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">expr_value</span><span class="p">,</span> <span class="n">expr_constraint</span> <span class="ow">in</span> <span class="n">expr_result</span><span class="p">:</span>
+                <span class="n">conjunction</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">atom_constraint</span><span class="p">,</span> <span class="n">expr_constraint</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr_value</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">expr_value</span><span class="p">,</span> <span class="n">conjunction</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">expr_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="o">!=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">():</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;list indices must be integers, not </span><span class="si">{</span><span class="n">expr_value</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                                   <span class="n">conjunction</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">atom_value</span><span class="p">:</span> <span class="n">z3</span><span class="o">.</span><span class="n">SeqRef</span>
+
+                <span class="c1"># In Python, indices can be in the closed interval [-len ; len - 1]</span>
+                <span class="n">length_constraint_1</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">expr_value</span><span class="p">,</span>
+                                             <span class="n">expr_value</span> <span class="o">&lt;</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">atom_value</span><span class="p">))</span>  <span class="c1"># [0 ; len - 1]</span>
+                <span class="n">length_constraint_2</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">expr_value</span><span class="p">,</span>
+                                             <span class="n">expr_value</span> <span class="o">&gt;=</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntVal</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">atom_value</span><span class="p">))</span>  <span class="c1"># [-len ; -1]</span>
+
+                <span class="n">expr</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">atom_value</span><span class="p">[</span><span class="n">expr_value</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">decl</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Z3_OP_ITE</span> <span class="ow">and</span> \
+                        <span class="n">implies</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint_1</span><span class="p">),</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint_1</span><span class="p">)))</span>
+
+                <span class="n">expr</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">atom_value</span><span class="p">[</span><span class="n">z3</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="n">atom_value</span><span class="p">)</span> <span class="o">+</span> <span class="n">expr_value</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">decl</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span> <span class="o">==</span> <span class="n">z3</span><span class="o">.</span><span class="n">Z3_OP_ITE</span> <span class="ow">and</span> \
+                        <span class="n">implies</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint_2</span><span class="p">),</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">expr</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">length_constraint_2</span><span class="p">)))</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;tuple index out of range&quot;</span><span class="p">),</span>
+                               <span class="n">z3</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">conjunction</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">length_constraint_1</span><span class="p">),</span> <span class="n">z3</span><span class="o">.</span><span class="n">Not</span><span class="p">(</span><span class="n">length_constraint_2</span><span class="p">))))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we should no longer find a problem in that implementation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">maybe_counterexample</span> <span class="o">=</span> <span class="n">is_probably_precise</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">(),</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">},</span> <span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_counterexample</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of if statements is probably precise.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of if statements is not precise. Counterexample: </span><span class="si">{</span><span class="n">maybe_counterexample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is probably precise.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_z3</span><span class="p">(),</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()}))</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">),</span> <span class="n">env</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DEMO-Correctness_32_0.svg" src="_images/DEMO-Correctness_32_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="exhaustiveness">
+<h2>Exhaustiveness<a class="headerlink" href="#exhaustiveness" title="Permalink to this headline">¶</a></h2>
+<p><em>Exhaustiveness</em> is the property that every feasible bug will be discovered, though not all reported bugs may be feasible (overapproximation).</p>
+<p>Given a test program and symbolic and concrete inputs states, we</p>
+<ol class="simple">
+<li><p>Compute the result (output states) of symbolically executing the test program in the symbolic input state.</p></li>
+<li><p>Compute the set of concretizations for the output states, which generally contains <em>at most</em> one element.</p></li>
+<li><p>Compute the concretization of the input symbolic state w.r.t. the test program, i.e., using the <em>concrete</em> reference interpreter.</p></li>
+<li><p>Check that the results from step 3 are contained in the singleton set with the result from step 1, i.e., all computations of the <em>concrete</em> interpreter can be reproduced by the <em>symbolic</em> interpreter.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_exhaustiveness</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                         <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                         <span class="n">input_state</span><span class="p">:</span> <span class="n">SymbolicEnvironment</span><span class="p">,</span>
+                         <span class="n">sigma</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">input_state</span><span class="p">))]</span>
+    <span class="n">concr_symbolic</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+
+    <span class="n">concr_concrete</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">concr_concrete</span><span class="o">.</span><span class="n">subset_of</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we turn this into an automated testing procedure only requiring a single run of the symbolic interpreter per test program.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_probably_exhaustive</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
+                           <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
+                           <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
+                           <span class="n">num_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+    <span class="n">symbolic_input_state</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+    <span class="p">}))</span>
+
+    <span class="n">output_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">environment</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">get_leaves</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ast_node</span><span class="p">,</span> <span class="n">symbolic_input_state</span><span class="p">))]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_runs</span><span class="p">):</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">Store</span><span class="p">({</span>
+            <span class="n">variable</span><span class="p">:</span> <span class="n">random_val</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
+        <span class="p">})</span>
+
+        <span class="n">concr_symbolic</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">output_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">output_state</span> <span class="ow">in</span> <span class="n">output_states</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+
+        <span class="n">concr_concrete</span> <span class="o">=</span> <span class="n">ConcrResultSet</span><span class="p">([</span><span class="n">concr</span><span class="p">(</span><span class="n">symbolic_input_state</span><span class="p">,</span> <span class="n">ast_node</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)])</span>
+
+        <span class="n">exhaustive</span> <span class="o">=</span> <span class="n">concr_concrete</span><span class="o">.</span><span class="n">subset_of</span><span class="p">(</span><span class="n">concr_symbolic</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">exhaustive</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sigma</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For the test program with the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement and tuple access, we do not find non-exhaustive behavior:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">maybe_counterexample</span> <span class="o">=</span> <span class="n">is_probably_exhaustive</span><span class="p">(</span><span class="n">SymbolicInterpreter</span><span class="p">(),</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">},</span> <span class="n">parse</span><span class="p">(</span><span class="n">program</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_counterexample</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of if statements is probably exhaustive.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of if statements is not exhaustive. Counterexample: </span><span class="si">{</span><span class="n">maybe_counterexample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is probably exhaustive.
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, symbolically executing a while loop using bounded unrolling is not exhaustive, as can be expected:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">while_program</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">while idx &gt;= x:</span>
+<span class="s2">    idx = idx - 1</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">display_program</span><span class="p">(</span><span class="n">while_program</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">INT_TYPE</span><span class="p">)</span>
+
+<span class="n">interpreter</span> <span class="o">=</span> <span class="n">SymbolicInterpreter</span><span class="p">(</span>
+    <span class="n">loop_unrolling_threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># &lt;-- Bounded unrolling!</span>
+
+<span class="n">maybe_counterexample</span> <span class="o">=</span> <span class="n">is_probably_exhaustive</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">},</span> <span class="n">parse</span><span class="p">(</span><span class="n">while_program</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_counterexample</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Execution of while statements is probably exhaustive.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution of while statements is not exhaustive. Counterexample: </span><span class="si">{</span><span class="n">maybe_counterexample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of while statements is not exhaustive. Counterexample: {x: 64, idx: 81}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we can execute the simple <code class="docutils literal notranslate"><span class="pre">while</span></code> program starting in the counterexample state, both concretely and symbolically:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concr_env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">Store</span><span class="p">(</span><span class="n">maybe_counterexample</span><span class="p">))</span>
+<span class="n">Interpreter</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">while_program</span><span class="p">),</span> <span class="n">concr_env</span><span class="p">)</span>
+<span class="n">concr_env</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>63
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concr_symb_env</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="n">python_expr_to_z3_expr</span><span class="p">(</span><span class="n">maybe_counterexample</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">maybe_counterexample</span><span class="p">}</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">(</span><span class="n">concr_symb_env</span><span class="p">))</span>
+<span class="n">display_set</span><span class="p">(</span><span class="n">interpreter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">while_program</span><span class="p">),</span> <span class="n">env</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DEMO-Correctness_45_0.svg" src="_images/DEMO-Correctness_45_0.svg" /></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Dominic Steinhöfel<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
