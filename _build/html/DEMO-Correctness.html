@@ -601,7 +601,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is not precise. Counterexample: {t: (47, 21, -100, -64, 8, -84), x: -3}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of if statements is not precise. Counterexample: {x: -3, t: (30, 13, -50)}
 </pre></div>
 </div>
 </div>
@@ -617,7 +617,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30
 </pre></div>
 </div>
 </div>
@@ -754,7 +754,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_probably_exhaustive</span><span class="p">(</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">SymbolicInterpreter</span><span class="p">,</span>
                            <span class="n">variables</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Variable</span><span class="p">],</span>
                            <span class="n">ast_node</span><span class="p">:</span> <span class="n">ASTNode</span><span class="p">,</span>
-                           <span class="n">num_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
+                           <span class="n">num_runs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Store</span><span class="p">]:</span>
     <span class="n">symbolic_input_state</span> <span class="o">=</span> <span class="n">SymbolicEnvironment</span><span class="p">(</span><span class="n">SymbolicStore</span><span class="p">({</span>
         <span class="n">variable</span><span class="p">:</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_z3</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span>
@@ -835,7 +835,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of while statements is not exhaustive. Counterexample: {x: 64, idx: 81}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution of while statements is not exhaustive. Counterexample: {x: -36, idx: 93}
 </pre></div>
 </div>
 </div>
@@ -850,7 +850,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>63
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-37
 </pre></div>
 </div>
 </div>
